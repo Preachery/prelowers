@@ -11,13 +11,13 @@
 
 body {
     font-family: 'Inter', sans-serif; background-color: var(--bg);
-    color: var(--text-main); height: 100vh; width: 100vw; overflow: hidden;
+    color: var(--text-main); min-height: 100vh; width: 100%; overflow-x: hidden;
     position: relative;
 }
 
 /* Premium Ambient Glows */
 .ambient-glow {
-    position: absolute; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.3;
+    position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.3;
 }
 .glow-primary { top: -20%; left: 0%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-2) 0%, transparent 60%); }
 .glow-secondary { bottom: -20%; right: 0%; width: 40vw; height: 40vw; background: radial-gradient(circle, var(--accent-1) 0%, transparent 60%); }
@@ -34,27 +34,20 @@ body {
 
 /* 
 ==============================================
-   THE MASTER CANVAS SCALING ENGINE
+   NATURAL SCROLLING LAYOUT (Replaced Canvas Engine)
 ==============================================
 */
 #scale-wrapper {
-    width: 100vw; height: 100vh; overflow: hidden;
-    position: relative; /* Removes flex to use absolute children */
+    width: 100%; min-height: 100vh;
+    position: relative;
 }
 
 #canvas-workspace {
-    /* Exact Master Canvas Dimensions */
-    width: 1540px; height: 950px;
-    
-    /* Absolute Centering Technique */
-    position: absolute;
-    top: 50%; left: 50%;
-    margin-top: -475px; /* Half of height */
-    margin-left: -770px; /* Half of width */
-    
+    max-width: 1540px; 
+    margin: 0 auto;
+    padding: 100px 20px 60px 20px;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    transform-origin: center center;
+    align-items: center; justify-content: flex-start;
 }
 
 /* Floating Controls */
@@ -121,13 +114,13 @@ body {
 
 /* Showcase Row */
 .showcase-row {
-    display: flex; align-items: stretch; justify-content: space-between; width: 100%; max-width: 1540px; margin: 0 auto; gap: 20px;
+    display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1540px; margin: 0 auto; gap: 20px;
 }
 
 /* Infographics (Flex Layout) */
 .info-column { 
     position: relative;
-    display: flex; flex-direction: column; justify-content: space-evenly; 
+    display: flex; flex-direction: column; justify-content: center; gap: 40px;
     width: 340px; z-index: 10; padding: 40px 0;
 }
 .info-column:not(.right) { align-items: flex-start; text-align: left; margin-left: 20px; }

@@ -377,36 +377,7 @@ window.PRELOWERS_INJECTED_SETTINGS = {
         }
     }
 
-    // --- CANVAS SCALING ENGINE (With Mobile Disabled) ---
-    function scaleCanvas() {
-        const wrapper = document.getElementById('scale-wrapper');
-        const canvas = document.getElementById('canvas-workspace');
-        if (!wrapper || !canvas) return;
-        
-        // Disable scaling entirely on mobile devices (let CSS handle natural scrolling)
-        if(window.innerWidth <= 900) {
-            canvas.style.transform = 'none';
-            return;
-        }
-        
-        // The master canvas is built for 1540x950
-        const CANVAS_W = 1540;
-        const CANVAS_H = 950;
-        
-        // Calculate the scale needed to fit the viewport
-        const scaleX = window.innerWidth / CANVAS_W;
-        const scaleY = window.innerHeight / CANVAS_H;
-        
-        // Use the smaller scale to ensure it fits completely without scrolling
-        const scale = Math.min(scaleX, scaleY) * 0.95;
-        
-        canvas.style.transform = `scale(${scale})`;
-    }
-
-    // Listen for resize and trigger initially
-    window.addEventListener('resize', scaleCanvas);
-    scaleCanvas();
-
+    // (Canvas Scaling Engine Removed to allow natural CSS layout/scrolling)
     // --- TELEMETRY WIDGET LOGIC ---
     const visitCountEl = document.getElementById('visitCount');
     const copyCountEl = document.getElementById('copyCount');
