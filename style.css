@@ -44,13 +44,13 @@ body {
 
 #canvas-workspace {
     /* Exact Master Canvas Dimensions */
-    width: 1400px; height: 1000px;
+    width: 1540px; height: 950px;
     
     /* Absolute Centering Technique */
     position: absolute;
     top: 50%; left: 50%;
-    margin-top: -500px; /* Half of height */
-    margin-left: -700px; /* Half of width */
+    margin-top: -475px; /* Half of height */
+    margin-left: -770px; /* Half of width */
     
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
@@ -121,26 +121,38 @@ body {
 
 /* Showcase Row */
 .showcase-row {
-    display: flex; align-items: center; justify-content: center; width: 100%; gap: 40px; 
+    display: flex; align-items: center; justify-content: center; width: 100%; gap: 0; 
 }
 
-/* Infographics */
-.info-column { display: flex; flex-direction: column; gap: 24px; width: 240px; }
-.info-column.right { align-items: flex-start; }
-.info-column:not(.right) { align-items: flex-end; text-align: right; }
+/* Infographics (Absolute Positioning for Corner Layout) */
+.info-column { 
+    position: absolute; top: 12%; height: 72%;
+    display: flex; flex-direction: column; justify-content: space-between; 
+    width: 350px; z-index: 10;
+}
+.info-column:not(.right) { left: 20px; align-items: flex-start; text-align: left; }
+.info-column.right { right: 20px; align-items: flex-end; text-align: right; }
 
 .info-card {
-    display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 16px;
-    background: rgba(20,20,20,0.4); border: 1px solid var(--border); backdrop-filter: blur(10px);
+    display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 20px;
+    background: rgba(20,20,20,0.6); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(14px);
+    width: 100%; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     animation: float 6s ease-in-out infinite alternate;
 }
-.info-column:not(.right) .info-card { flex-direction: row-reverse; }
-.info-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 10px; }
-.info-text strong { display: block; font-size: 1rem; color: var(--text-main); }
-.info-text p { font-size: 0.85rem; color: var(--text-muted); }
+.info-column:not(.right) .info-card { flex-direction: row; }
+.info-column.right .info-card { flex-direction: row-reverse; }
+
+.info-icon { 
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0; 
+    display: flex; align-items: center; justify-content: center; 
+    background: rgba(255,255,255,0.05); 
+}
+.info-icon svg { width: 26px; height: 26px; }
+.info-text strong { display: block; font-size: 1.15rem; color: var(--text-main); margin-bottom: 4px; }
+.info-text p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.4; }
 
 @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-.delay-1 { animation-delay: 1s; } .delay-2 { animation-delay: 0.5s; } .delay-3 { animation-delay: 1.5s; }
+.delay-1 { animation-delay: 1.5s; } .delay-2 { animation-delay: 0.5s; } .delay-3 { animation-delay: 2s; }
 
 /* Macbook Mockup */
 .macbook-wrapper {
