@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error('Initialization failed.'));
 
+    // In-button Copy Animation & Auto-Open Instagram
     if(copyBtn) {
         copyBtn.addEventListener('click', async () => {
             if (!scriptContent || copyBtn.classList.contains('copied')) return;
@@ -120,17 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 await navigator.clipboard.writeText(scriptContent);
                 copyBtn.classList.add('copied');
                 const span = copyBtn.querySelector('span');
-                const originalText = span.innerText;
                 span.innerText = I18N[currentLang].copyBtnSuccess;
-
+                
+                // Open Instagram in a new tab immediately to bypass popup blockers
+                window.open('https://www.instagram.com/', '_blank');
+                
                 setTimeout(() => {
                     copyBtn.classList.remove('copied');
                     span.innerText = I18N[currentLang].copyBtn;
                 }, 2000);
-            } catch (err) {}
+            } catch (err) {
+                console.error('Copy failed', err);
+            }
         });
     }
 
+    // Dropdown Logic
     if(dropBtn) {
         dropBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -148,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const lang = e.currentTarget.getAttribute('data-lang');
+                currentLang = lang; // Fix: Update the global state so copyBtn uses the new language
                 localStorage.setItem('prelowers-lang', lang);
                 updateLanguage(lang);
                 if(dropMenu) dropMenu.classList.remove('show');
