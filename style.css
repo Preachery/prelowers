@@ -34,20 +34,24 @@ body {
 
 /* 
 ==============================================
-   NATURAL SCROLLING LAYOUT (Replaced Canvas Engine)
+   THE MASTER CANVAS SCALING ENGINE V2
 ==============================================
 */
+body {
+    overflow: hidden;
+}
 #scale-wrapper {
-    width: 100%; min-height: 100vh;
+    width: 100vw; height: 100vh; overflow: hidden;
     position: relative;
 }
 
 #canvas-workspace {
-    max-width: 1540px; 
-    margin: 0 auto;
-    padding: 100px 20px 60px 20px;
+    width: 1540px; height: 1080px;
+    position: absolute; top: 50%; left: 50%;
+    margin-top: -540px; margin-left: -770px;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start;
+    align-items: center; justify-content: center; gap: 30px;
+    transform-origin: center center;
 }
 
 /* Floating Controls */
@@ -114,17 +118,18 @@ body {
 
 /* Showcase Row */
 .showcase-row {
-    display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1540px; margin: 0 auto; gap: 20px;
+    display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1540px; margin: 0 auto;
 }
 
-/* Infographics (Flex Layout) */
+/* Infographics (Absolute Corners Layout) */
 .info-column { 
-    position: relative;
-    display: flex; flex-direction: column; justify-content: center; gap: 40px;
-    width: 340px; z-index: 10; padding: 40px 0;
+    position: absolute;
+    top: 300px; bottom: 100px; /* Spans from Script Settings to Macbook */
+    display: flex; flex-direction: column; justify-content: space-between; 
+    width: 340px; z-index: 10;
 }
-.info-column:not(.right) { align-items: flex-start; text-align: left; margin-left: 20px; }
-.info-column.right { align-items: flex-end; text-align: right; margin-right: 20px; }
+.info-column:not(.right) { left: 20px; align-items: flex-start; text-align: left; }
+.info-column.right { right: 20px; align-items: flex-end; text-align: right; }
 
 .info-card {
     display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 20px;

@@ -179,8 +179,35 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             scriptContent = data;
             if(codeViewer) {
-                codeViewer.textContent = scriptContent;
-                if(window.Prism) Prism.highlightElement(codeViewer);
+                codeViewer.textContent = '';
+                const lines = scriptContent.split('\n');
+                const visibleLines = [];
+                let i = 0;
+                const speed = 4; // Lines per frame
+                
+                function typeCode() {
+                    if (i < lines.length) {
+                        for(let j = 0; j < speed && i < lines.length; j++) {
+                            visibleLines.push(lines[i]);
+                            i++;
+                        }
+                        // Keep only last 22 lines to simulate terminal auto-scroll without scrollbars
+                        if (visibleLines.length > 22) {
+                            visibleLines.splice(0, visibleLines.length - 22);
+                        }
+                        codeViewer.textContent = visibleLines.join('\n');
+                        requestAnimationFrame(typeCode);
+                    } else {
+                        // Once finished, show the complete code and syntax highlight it!
+                        codeViewer.textContent = scriptContent;
+                        if(window.Prism) Prism.highlightElement(codeViewer);
+                        // Add a slight flash effect for that professional feel
+                        codeViewer.style.animation = 'flash 0.5s ease';
+                    }
+                }
+                
+                // Start animation with a slight delay
+                setTimeout(typeCode, 500);
             }
         })
         .catch(err => console.error('Initialization failed.'));
@@ -377,7 +404,33 @@ window.PRELOWERS_INJECTED_SETTINGS = {
         }
     }
 
-    // (Canvas Scaling Engine Removed to allow natural CSS layout/scrolling)
+    // --- CANVAS SCALING ENGINE V2 ---
+    function scaleCanvas() {
+        const wrapper = document.getElementById('scale-wrapper');
+        const canvas = document.getElementById('canvas-workspace');
+        if (!wrapper || !canvas) return;
+        
+        // Disable scaling entirely on mobile devices
+        if(window.innerWidth <= 900) {
+            canvas.style.transform = 'none';
+            return;
+        }
+        
+        // The master canvas is built for 1540x1080
+        const CANVAS_W = 1540;
+        const CANVAS_H = 1080;
+        
+        const scaleX = window.innerWidth / CANVAS_W;
+        const scaleY = window.innerHeight / CANVAS_H;
+        
+        // Use the smaller scale to ensure it fits perfectly inside the screen
+        const scale = Math.min(scaleX, scaleY) * 0.95;
+        
+        canvas.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', scaleCanvas);
+    scaleCanvas();
     // --- TELEMETRY WIDGET LOGIC ---
     const visitCountEl = document.getElementById('visitCount');
     const copyCountEl = document.getElementById('copyCount');
