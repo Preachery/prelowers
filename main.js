@@ -33,7 +33,17 @@ const I18N = {
         faq2Q: 'How does the script find Ghost Followers?',
         faq2A: 'The script securely compares your Following list with your Followers list using your browser\'s local memory. It identifies users who do not follow you back instantly.',
         faq3Q: 'Do I need to pay for a subscription?',
-        faq3A: 'No! Prelowers is a 100% free tool forever. There are no APIs to pay for, and no hidden subscriptions.'
+        faq3A: 'No! Prelowers is a 100% free tool forever. There are no APIs to pay for, and no hidden subscriptions.',
+        advToggle: 'Advanced Settings',
+        sgTheme: 'Script Theme',
+        sgDark: 'Dark (Default)',
+        sgLight: 'Light',
+        sgKitty: 'Hello Kitty (Pink)',
+        sgVfx: 'Enable Visual Effects (Glassmorphism)',
+        faq4Q: 'Does this work on mobile phones?',
+        faq4A: 'No, the script requires the developer console which is only available on desktop browsers (Chrome, Edge, Safari, Firefox). You must run it from a computer.',
+        faq5Q: 'What happens if the process is interrupted?',
+        faq5A: 'If you close the tab or your internet disconnects, the script will simply stop. Since it runs entirely in your browser, no partial data is saved. You can just restart the script anytime.'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -69,7 +79,17 @@ const I18N = {
         faq2Q: 'Geri takip etmeyenleri nasıl buluyor?',
         faq2A: 'Script, takip ettikleriniz ile takipçilerinizin listesini tamamen tarayıcınızın hafızasında karşılaştırır ve sizi geri takip etmeyenleri anında bulur.',
         faq3Q: 'Ücret ödemem gerekiyor mu?',
-        faq3A: 'Hayır! Prelowers sonsuza kadar %100 ücretsizdir. Satın almanız gereken bir API veya gizli abonelik yoktur.'
+        faq3A: 'Hayır! Prelowers sonsuza kadar %100 ücretsizdir. Satın almanız gereken bir API veya gizli abonelik yoktur.',
+        advToggle: 'Gelişmiş Seçenekler',
+        sgTheme: 'Script Teması',
+        sgDark: 'Koyu (Varsayılan)',
+        sgLight: 'Açık',
+        sgKitty: 'Hello Kitty (Pembe)',
+        sgVfx: 'Görsel Efektleri (Glassmorphism) Aç',
+        faq4Q: 'Telefonda çalışır mı?',
+        faq4A: 'Hayır, script yalnızca bilgisayar tarayıcılarında (Chrome, Edge, Safari vb.) bulunan geliştirici konsolu üzerinden çalışır.',
+        faq5Q: 'İşlem yarıda kesilirse ne olur?',
+        faq5A: 'Eğer sekmeyi kapatırsanız veya internetiniz koparsa script sadece durur. Herhangi bir veri yarım kaydedilmez, istediğiniz zaman scripti tekrar çalıştırabilirsiniz.'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -167,6 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropMenu = document.getElementById('langDropMenu');
     const dropItems = document.querySelectorAll('.lang-drop-item');
     
+    // Advanced Panel Elements
+    const advancedToggle = document.getElementById('advancedToggle');
+    const advancedPanel = document.getElementById('advancedPanel');
+
+    if(advancedToggle && advancedPanel) {
+        advancedToggle.addEventListener('click', () => {
+            advancedToggle.classList.toggle('open');
+            advancedPanel.classList.toggle('open');
+        });
+    }
+    
     let scriptContent = '';
 
     // Initialize Language
@@ -179,35 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             scriptContent = data;
             if(codeViewer) {
-                codeViewer.textContent = '';
-                const lines = scriptContent.split('\n');
-                const visibleLines = [];
-                let i = 0;
-                const speed = 4; // Lines per frame
-                
-                function typeCode() {
-                    if (i < lines.length) {
-                        for(let j = 0; j < speed && i < lines.length; j++) {
-                            visibleLines.push(lines[i]);
-                            i++;
-                        }
-                        // Keep only last 22 lines to simulate terminal auto-scroll without scrollbars
-                        if (visibleLines.length > 22) {
-                            visibleLines.splice(0, visibleLines.length - 22);
-                        }
-                        codeViewer.textContent = visibleLines.join('\n');
-                        requestAnimationFrame(typeCode);
-                    } else {
-                        // Once finished, show the complete code and syntax highlight it!
-                        codeViewer.textContent = scriptContent;
-                        if(window.Prism) Prism.highlightElement(codeViewer);
-                        // Add a slight flash effect for that professional feel
-                        codeViewer.style.animation = 'flash 0.5s ease';
-                    }
-                }
-                
-                // Start animation with a slight delay
-                setTimeout(typeCode, 500);
+                // Instantly load code to prevent scrolling at launch
+                codeViewer.textContent = scriptContent;
+                if(window.Prism) Prism.highlightElement(codeViewer);
             }
         })
         .catch(err => console.error('Initialization failed.'));
@@ -224,13 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pLang = document.getElementById('sgLang').value || 'en';
                 const pSpeed = document.getElementById('sgSpeed').value || 'normal';
                 const pProtect = document.getElementById('sgProtect').checked;
+                const pTheme = document.getElementById('sgTheme') ? document.getElementById('sgTheme').value : 'dark';
+                const pVfx = document.getElementById('sgVfx') ? document.getElementById('sgVfx').checked : true;
                 
                 const preSettings = `
 // --- PRELOWERS INJECTED SETTINGS ---
 window.PRELOWERS_INJECTED_SETTINGS = {
     lang: "${pLang}",
     speed: "${pSpeed}",
-    protectVerified: ${pProtect}
+    protectVerified: ${pProtect},
+    theme: "${pTheme}",
+    visualEffects: ${pVfx}
 };
 // -----------------------------------
 `;
