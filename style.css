@@ -17,10 +17,11 @@ body {
 
 /* Premium Ambient Glows */
 .ambient-glow {
-    position: fixed; border-radius: 50%; filter: blur(140px); z-index: -1; opacity: 0.3;
+    position: fixed; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.45;
 }
-.glow-primary { top: -20%; left: 0%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-2) 0%, transparent 60%); }
-.glow-secondary { bottom: -20%; right: 0%; width: 40vw; height: 40vw; background: radial-gradient(circle, var(--accent-1) 0%, transparent 60%); }
+.glow-primary { top: -20%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-2) 0%, transparent 60%); }
+.glow-secondary { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-1) 0%, transparent 60%); }
+.glow-center { top: 30%; left: 30%; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%); }
 
 .text-gradient {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
@@ -139,12 +140,12 @@ body {
 /* 3-Column Main Layout */
 .main-3col-layout {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
     max-width: 1540px;
-    gap: 40px;
+    margin: 0 auto;
     margin-bottom: 60px;
 }
 
