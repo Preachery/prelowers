@@ -121,6 +121,29 @@
         </div>
     </div>
 
+    <!-- Tutorial Modal -->
+    <div class="tutorial-modal" id="tutorialModal">
+        <div class="tutorial-content glass-panel">
+            <h2 id="t-popupTitle">Code Copied! ✔️</h2>
+            <p id="t-popupDesc">Follow the quick tutorial below, then open Instagram to run the script.</p>
+            
+            <div class="video-placeholder">
+                <video src="images/tutorial.mp4" controls muted playsinline class="tutorial-video" id="tutorialVideo"></video>
+            </div>
+            
+            <div class="tutorial-actions">
+                <button class="btn-secondary" id="btnModalClose"><span id="t-popupClose">Close</span></button>
+                <button class="btn-primary" id="btnModalIg"><span id="t-popupIg">Open Instagram</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="main.js"></script>

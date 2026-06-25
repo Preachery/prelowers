@@ -13,7 +13,11 @@ const I18N = {
         ig3Title: 'Zero API Cost',
         ig3Sub: 'Free forever to use',
         ig4Title: 'Smart Filter',
-        ig4Sub: 'Find ghost followers'
+        ig4Sub: 'Find ghost followers',
+        popupTitle: 'Code Copied! ✔️',
+        popupDesc: 'Watch the quick 10-second tutorial below, then open Instagram to run the script.',
+        popupIg: 'Open Instagram',
+        popupClose: 'Close'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -29,7 +33,11 @@ const I18N = {
         ig3Title: 'Sıfır Maliyet',
         ig3Sub: 'Tamamen ücretsiz',
         ig4Title: 'Akıllı Filtreleme',
-        ig4Sub: 'Sahte takipçileri bulun'
+        ig4Sub: 'Sahte takipçileri bulun',
+        popupTitle: 'Kod Kopyalandı! ✔️',
+        popupDesc: 'Kodu nasıl kullanacağınızı görmek için aşağıdaki 10 saniyelik videoyu izleyin, ardından Instagram\'ı açın.',
+        popupIg: 'Instagram\'ı Aç',
+        popupClose: 'Kapat'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -45,7 +53,11 @@ const I18N = {
         ig3Title: 'Cero Costo de API',
         ig3Sub: 'Uso gratuito',
         ig4Title: 'Filtro Inteligente',
-        ig4Sub: 'Encuentra seguidores fantasma'
+        ig4Sub: 'Encuentra seguidores fantasma',
+        popupTitle: '¡Código Copiado! ✔️',
+        popupDesc: 'Mira el tutorial de 10 segundos a continuación, luego abre Instagram para ejecutar el script.',
+        popupIg: 'Abrir Instagram',
+        popupClose: 'Cerrar'
     },
     de: {
         badge: 'Client-Side & Sicher',
@@ -61,7 +73,11 @@ const I18N = {
         ig3Title: 'Null API-Kosten',
         ig3Sub: 'Für immer kostenlos',
         ig4Title: 'Smart Filter',
-        ig4Sub: 'Finde Geister-Follower'
+        ig4Sub: 'Finde Geister-Follower',
+        popupTitle: 'Code Kopiert! ✔️',
+        popupDesc: 'Sieh dir das kurze 10-Sekunden-Tutorial an und öffne dann Instagram, um das Skript auszuführen.',
+        popupIg: 'Instagram öffnen',
+        popupClose: 'Schließen'
     },
     fr: {
         badge: 'Côté client & Sécurisé',
@@ -77,7 +93,11 @@ const I18N = {
         ig3Title: 'Zéro coût d\'API',
         ig3Sub: 'Utilisation gratuite',
         ig4Title: 'Filtre intelligent',
-        ig4Sub: 'Trouvez les abonnés fantômes'
+        ig4Sub: 'Trouvez les abonnés fantômes',
+        popupTitle: 'Code Copié! ✔️',
+        popupDesc: 'Regardez le tutoriel de 10 secondes ci-dessous, puis ouvrez Instagram pour exécuter le script.',
+        popupIg: 'Ouvrir Instagram',
+        popupClose: 'Fermer'
     }
 };
 
@@ -92,16 +112,25 @@ const FLAGS = {
 document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copyBtn');
     const codeViewer = document.getElementById('code-viewer');
+    
+    // Modal Elements
+    const tutorialModal = document.getElementById('tutorialModal');
+    const btnModalClose = document.getElementById('btnModalClose');
+    const btnModalIg = document.getElementById('btnModalIg');
+    const tutorialVideo = document.getElementById('tutorialVideo');
 
+    // Dropdown Elements
     const dropBtn = document.getElementById('langDropBtn');
     const dropMenu = document.getElementById('langDropMenu');
     const dropItems = document.querySelectorAll('.lang-drop-item');
-
+    
     let scriptContent = '';
 
+    // Initialize Language
     let currentLang = localStorage.getItem('prelowers-lang') || (navigator.language.startsWith('tr') ? 'tr' : 'en');
     updateLanguage(currentLang);
 
+    // Fetch the script content securely
     fetch('./tool.js')
         .then(response => response.text())
         .then(data => {
@@ -113,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error('Initialization failed.'));
 
-    // In-button Copy Animation & Auto-Open Instagram
+    // In-button Copy Animation & Modal Open
     if(copyBtn) {
         copyBtn.addEventListener('click', async () => {
             if (!scriptContent || copyBtn.classList.contains('copied')) return;
@@ -123,8 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const span = copyBtn.querySelector('span');
                 span.innerText = I18N[currentLang].copyBtnSuccess;
                 
-                // Open Instagram in a new tab immediately to bypass popup blockers
-                window.open('https://www.instagram.com/', '_blank');
+                // Show the tutorial modal
+                if(tutorialModal) {
+                    tutorialModal.classList.add('show');
+                    if(tutorialVideo) tutorialVideo.play().catch(e => console.log("Video auto-play prevented"));
+                }
                 
                 setTimeout(() => {
                     copyBtn.classList.remove('copied');
@@ -133,6 +165,23 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 console.error('Copy failed', err);
             }
+        });
+    }
+
+    // Modal Actions
+    if(btnModalClose) {
+        btnModalClose.addEventListener('click', () => {
+            tutorialModal.classList.remove('show');
+            if(tutorialVideo) tutorialVideo.pause();
+        });
+    }
+    
+    if(btnModalIg) {
+        btnModalIg.addEventListener('click', () => {
+            // Open Instagram and close modal
+            window.open('https://www.instagram.com/', '_blank');
+            tutorialModal.classList.remove('show');
+            if(tutorialVideo) tutorialVideo.pause();
         });
     }
 
@@ -154,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const lang = e.currentTarget.getAttribute('data-lang');
-                currentLang = lang; // Fix: Update the global state so copyBtn uses the new language
+                currentLang = lang;
                 localStorage.setItem('prelowers-lang', lang);
                 updateLanguage(lang);
                 if(dropMenu) dropMenu.classList.remove('show');
@@ -164,27 +213,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateLanguage(lang) {
         const dict = I18N[lang] || I18N['en'];
-
+        
+        // Update Dropdown Button UI
         if (dropBtn) {
             dropBtn.innerHTML = `${FLAGS[lang]} ${lang.toUpperCase()} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
         }
 
+        // Apply translations
         Object.keys(dict).forEach(key => {
             const el = document.getElementById('t-' + key);
             if(el) el.innerHTML = dict[key];
         });
-
+        
+        // If button is currently NOT in copied state, update its text
         if(copyBtn && !copyBtn.classList.contains('copied')) {
             const span = copyBtn.querySelector('span');
             if(span) span.innerText = dict.copyBtn;
         }
     }
 
-    // --- CANVAS SCALING ENGINE ---
+    // --- CANVAS SCALING ENGINE (With Mobile Disabled) ---
     function scaleCanvas() {
         const wrapper = document.getElementById('scale-wrapper');
         const canvas = document.getElementById('canvas-workspace');
         if (!wrapper || !canvas) return;
+        
+        // Disable scaling entirely on mobile devices (let CSS handle natural scrolling)
+        if(window.innerWidth <= 900) {
+            canvas.style.transform = 'none';
+            return;
+        }
         
         // The master canvas is built for 1400x1000
         const CANVAS_W = 1400;
@@ -195,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const scaleY = window.innerHeight / CANVAS_H;
         
         // Use the smaller scale to ensure it fits completely without scrolling
-        // Multiply by 0.95 to add a tiny bit of breathing room
         const scale = Math.min(scaleX, scaleY) * 0.95;
         
         canvas.style.transform = `scale(${scale})`;
