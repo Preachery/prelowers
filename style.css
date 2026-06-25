@@ -49,9 +49,19 @@ body {
 .nav-actions { display: flex; align-items: center; gap: 20px; }
 .dev-link { color: var(--accent-2); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
 
-.lang-select {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main);
-    padding: 6px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; outline: none;
+.lang-switcher-group {
+    display: flex; gap: 6px; background: rgba(255,255,255,0.03); 
+    padding: 4px; border-radius: 10px; border: 1px solid var(--border);
+}
+.lang-btn {
+    background: transparent; color: var(--text-muted); border: none;
+    padding: 6px 10px; border-radius: 6px; font-weight: 600; cursor: pointer;
+    font-size: 0.85rem; transition: all 0.2s;
+}
+.lang-btn:hover { color: var(--text-main); }
+.lang-btn.active {
+    background: rgba(168, 85, 247, 0.2); color: var(--text-main);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
 }
 
 /* Main Container */
@@ -114,20 +124,25 @@ body {
 .macbook-screen-bezel {
     width: 100%; aspect-ratio: 16 / 10; background: #0f1013; border-radius: 4% 4% 0 0 / 6% 6% 0 0;
     padding: 2.5%; border: 2px solid #2a2a2a; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
 }
 .macbook-camera { position: absolute; top: 1.5%; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #333; border-radius: 50%; }
-.macbook-screen { width: 100%; height: 100%; background: #000; border-radius: 4px; overflow: hidden; position: relative; }
+.macbook-screen { 
+    width: 100%; flex: 1; background: #000; border-radius: 4px; overflow: hidden; position: relative; 
+    display: flex; flex-direction: column;
+}
 
 .macbook-base {
     width: 110%; height: 2vw; max-height: 24px; background: #222; border-radius: 0 0 20px 20px;
     position: relative; border-top: 1px solid #444; box-shadow: inset 0 -2px 6px rgba(0,0,0,0.8), 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 2;
 }
 .macbook-notch { width: 15%; height: 40%; background: #111; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border-radius: 0 0 10px 10px; }
 
 /* Fullscreen macOS Terminal inside Screen */
 .macos-window {
     width: 100%; height: 100%; display: flex; flex-direction: column;
-    background: rgba(15, 15, 20, 0.95);
+    background: rgba(15, 15, 20, 0.95); position: absolute; top: 0; left: 0;
 }
 .macos-header {
     background: rgba(0,0,0,0.6); padding: 8px 16px; display: flex; align-items: center;
