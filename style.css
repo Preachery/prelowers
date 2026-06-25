@@ -244,6 +244,85 @@ pre[class*="language-"] {
 
 /* 
 ==============================================
+   THEME ENGINE
+==============================================
+*/
+body[data-theme="hacker"] {
+    --bg: #020a04; --text-main: #4ade80; --text-muted: #22c55e;
+    --accent-1: #16a34a; --accent-2: #22c55e; --border: rgba(74, 222, 128, 0.2);
+}
+body[data-theme="elegance"] {
+    --bg: #0a0a0a; --text-main: #fef08a; --text-muted: #a1a1aa;
+    --accent-1: #eab308; --accent-2: #ca8a04; --border: rgba(234, 179, 8, 0.2);
+}
+body[data-theme="kitty"] {
+    --bg: #fff0f5; --text-main: #9d174d; --text-muted: #db2777;
+    --accent-1: #f472b6; --accent-2: #fbcfe8; --border: rgba(244, 114, 182, 0.4);
+}
+body[data-theme="kitty"] .glass-panel, body[data-theme="kitty"] .info-card {
+    background: rgba(255,255,255,0.7); border: 1px solid var(--border); color: var(--text-main);
+    box-shadow: 0 15px 35px rgba(244,114,182,0.1);
+}
+body[data-theme="kitty"] .btn-copy { background: #be185d; color: #fff; }
+body[data-theme="kitty"] .btn-copy.copied { background: #f472b6; }
+body[data-theme="kitty"] .macos-header { background: #fbcfe8; border-bottom: 1px solid #f472b6; }
+body[data-theme="kitty"] .macos-terminal { background: rgba(255,255,255,0.95); color: #be185d; }
+body[data-theme="kitty"] .macos-title { color: #db2777; }
+body[data-theme="kitty"] .sg-select { background: #fff; color: #9d174d; }
+
+/* 
+==============================================
+   SCRIPT GENERATOR UI
+==============================================
+*/
+.script-generator {
+    margin: 30px 0; padding: 20px 24px; border-radius: 16px; width: 100%; max-width: 440px;
+    display: flex; flex-direction: column; gap: 16px; text-align: left;
+}
+.script-generator h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--text-main); }
+.sg-row { display: flex; justify-content: space-between; align-items: center; }
+.sg-row label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+.sg-select {
+    background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: var(--text-main);
+    padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Inter', sans-serif;
+    cursor: pointer; font-size: 0.9rem; transition: border 0.2s;
+}
+.sg-select:hover { border-color: var(--accent-1); }
+
+/* Toggle Switch */
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px; border: 1px solid var(--border); }
+.slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--accent-1); border-color: var(--accent-1); }
+input:checked + .slider:before { transform: translateX(20px); background-color: #fff; }
+
+/* 
+==============================================
+   FAQ SECTION
+==============================================
+*/
+.faq-section {
+    margin-top: 20px; width: 800px; padding: 20px 24px;
+    border-radius: 20px; z-index: 100; text-align: left;
+}
+.faq-section h2 { font-size: 1.15rem; color: var(--text-main); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-btn {
+    width: 100%; text-align: left; background: none; border: none; color: var(--text-main);
+    padding: 12px 0; font-size: 0.95rem; font-weight: 500; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; font-family: 'Inter', sans-serif;
+}
+.faq-btn svg { transition: transform 0.3s; color: var(--accent-1); }
+.faq-item.active .faq-btn svg { transform: rotate(180deg); }
+.faq-content {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
+}
+.faq-content p { padding-bottom: 12px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+/* 
+==============================================
    MOBILE RESPONSIVENESS (Scroll Layout)
 ==============================================
 */

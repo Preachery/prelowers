@@ -64,7 +64,11 @@
             close: "Close",
             apiError: "API changes detected or rate limited. Received: ",
             loginError: "Could not find User ID. Please make sure you are logged in.",
-            csrfError: "CSRF Token missing."
+            csrfError: "CSRF Token missing.",
+            notifUnfollowed: "✅ @{user} unfollowed!",
+            notifRemoved: "✅ @{user} removed from followers!",
+            notifSkipped: "⚠️ Skipped @{user} (Verified)",
+            downloadReport: "Download Report"
         },
         tr: {
             title: "Prelowers",
@@ -109,20 +113,33 @@
             close: "Kapat",
             apiError: "API erişim limiti veya yapı değişikliği. Gelen veri: ",
             loginError: "Kullanıcı ID bulunamadı. Hesabınıza giriş yaptığınızdan emin olun.",
-            csrfError: "CSRF Token eksik."
+            csrfError: "CSRF Token eksik.",
+            notifUnfollowed: "✅ @{user} takipten çıkarıldı!",
+            notifRemoved: "✅ @{user} takipçilerden atıldı!",
+            notifSkipped: "⚠️ @{user} (Mavi Tikli) atlandı",
+            downloadReport: "Raporu İndir"
         }
     };
 
     function loadSettings() {
+        let injected = {};
+        if (typeof window.PRELOWERS_INJECTED_SETTINGS !== 'undefined') {
+            injected = window.PRELOWERS_INJECTED_SETTINGS;
+        }
         try {
             const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) return JSON.parse(stored);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                return { ...parsed, ...injected };
+            }
         } catch (e) {}
+        const defaultLang = navigator.language.startsWith('tr') ? 'tr' : 'en';
         return {
-            lang: navigator.language.startsWith('tr') ? 'tr' : 'en',
+            lang: injected.lang || defaultLang,
             blur: 20,
             opacity: 75,
-            speed: 'normal' // fast, normal, slow
+            speed: injected.speed || 'normal',
+            protectVerified: injected.protectVerified !== undefined ? injected.protectVerified : true
         };
     }
 
@@ -329,16 +346,22 @@
             let ok = false;
             try {
                 if (task.type === 'unfollow') {
+                    if (state.settings.protectVerified && user.is_verified) {
+                        showNotification(t("notifSkipped").replace('{user}', user.username), "warning");
+                        continue;
+                    }
                     ok = await unfollowUser(task.id, csrf);
                     if (ok) {
                         user.is_followed_by_viewer = false;
                         state.selectedUnfollow.delete(task.id);
+                        showNotification(t("notifUnfollowed").replace('{user}', user.username), "success");
                     }
                 } else if (task.type === 'remove_follower') {
                     ok = await removeFollower(task.id, csrf);
                     if (ok) {
                         user.is_following_viewer = false;
                         state.selectedRemove.delete(task.id);
+                        showNotification(t("notifRemoved").replace('{user}', user.username), "success");
                     }
                 }
             } catch (err) {
@@ -383,6 +406,8 @@
         const root = document.createElement("div");
         root.id = APP_ID;
         document.body.appendChild(root);
+        
+        initNotifications();
 
         renderShell(root);
         applyTheme();
@@ -596,8 +621,9 @@
                     `;
                 }).join('')}
             </div>
-            <div class="ig-adv-footer" style="justify-content: center;">
+            <div class="ig-adv-footer" style="justify-content: center; gap: 10px;">
                 <button class="ig-adv-btn primary" id="btn-back-results">${t("backToResults")}</button>
+                <button class="ig-adv-btn" id="btn-dl-report" style="background:#3b82f6; color:#fff; border:none;">${t("downloadReport")}</button>
             </div>
         `;
     }
@@ -646,7 +672,8 @@
         document.getElementById("btn-back-results")?.addEventListener("click", () => {
             state.mode = "results";
             renderBody();
-        });
+        });
+        document.getElementById("btn-dl-report")?.addEventListener("click", generateHTMLReport);
         const saveBtn = document.getElementById("btn-save-settings");
         if (saveBtn) {
             document.getElementById("set-blur")?.addEventListener("input", (e) => {
@@ -673,12 +700,12 @@
             searchInput.addEventListener("input", (e) => {
                 state.searchQuery = e.target.value;
                 renderBody();
-            });
+            });
             searchInput.focus();
             const val = searchInput.value;
             searchInput.value = '';
             searchInput.value = val;
-        }
+        }
         const list = document.querySelector(".ig-adv-list");
         if (list) {
             list.addEventListener("change", (e) => {
@@ -703,7 +730,7 @@
                         if(cbRem && !cbRem.disabled) cbRem.checked = check;
                     }
                 } else if (target.classList.contains("cb-unfollow")) {
-                    if (target.checked) state.selectedUnfollow.add(id); else state.selectedUnfollow.delete(id);
+                    if (target.checked) state.selectedUnfollow.add(id); else state.selectedUnfollow.delete(id);
                     const row = target.closest('.ig-adv-row');
                     const cbMaster = row.querySelector('.cb-master');
                     if(cbMaster) {
@@ -714,7 +741,7 @@
                         else cbMaster.checked = target.checked;
                     }
                 } else if (target.classList.contains("cb-remove")) {
-                    if (target.checked) state.selectedRemove.add(id); else state.selectedRemove.delete(id);
+                    if (target.checked) state.selectedRemove.add(id); else state.selectedRemove.delete(id);
                     const row = target.closest('.ig-adv-row');
                     const cbMaster = row.querySelector('.cb-master');
                     if(cbMaster) {
@@ -724,7 +751,7 @@
                         if (canUnf && canRem) cbMaster.checked = target.checked && isUnfChecked;
                         else cbMaster.checked = target.checked;
                     }
-                }
+                }
                 updateSelectionDOM();
             });
         }
@@ -763,7 +790,60 @@
             document.removeEventListener("mousemove", drag);
             document.removeEventListener("mouseup", dragEnd);
         }
-    }
+    }
+
+    function initNotifications() {
+        let container = document.getElementById("ig-adv-notif-container");
+        if (!container) {
+            container = document.createElement("div");
+            container.id = "ig-adv-notif-container";
+            document.body.appendChild(container);
+        }
+    }
+
+    function showNotification(msg, type) {
+        const container = document.getElementById("ig-adv-notif-container");
+        if (!container) return;
+        const notif = document.createElement("div");
+        notif.className = `ig-adv-notif ig-adv-notif-${type}`;
+        notif.innerHTML = msg;
+        container.appendChild(notif);
+        
+        setTimeout(() => notif.classList.add('show'), 10);
+        
+        setTimeout(() => {
+            notif.classList.remove('show');
+            setTimeout(() => notif.remove(), 300);
+        }, 4000);
+    }
+
+    function generateHTMLReport() {
+        let html = `<html><head><meta charset="utf-8"><title>Prelowers Report</title></head><body style="font-family:-apple-system, BlinkMacSystemFont, sans-serif; background:#f4f4f9; padding:40px; color:#333;">`;
+        html += `<h2 style="color:#60a5fa;">Prelowers Analysis & Action Report</h2>`;
+        html += `<p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
+        html += `<table border="1" cellpadding="10" style="border-collapse:collapse; width:100%; max-width:800px; background:#fff; border-color:#e5e7eb;">
+                 <tr style="background:#f9fafb;"><th style="text-align:left;">Action</th><th style="text-align:left;">Username</th><th style="text-align:left;">Status</th></tr>`;
+        
+        state.logs.forEach(log => {
+            const action = log.task.type === 'unfollow' ? 'Unfollow' : 'Remove Follower';
+            const status = log.ok ? 'Success' : 'Failed';
+            const color = log.ok ? '#16a34a' : '#dc2626';
+            html += `<tr><td>${action}</td><td><a href="https://instagram.com/${log.user.username}" target="_blank" style="color:#2563eb; text-decoration:none;">@${log.user.username}</a></td><td style="color:${color}; font-weight:600;">${status}</td></tr>`;
+        });
+        
+        html += `</table></body></html>`;
+        
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Prelowers_Report_${new Date().getTime()}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
     const CSS = `
         #${APP_ID} {
             --bg-panel: rgba(18, 18, 20, 0.75);
@@ -798,16 +878,46 @@
             max-height: 90vh;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            overflow: hidden;
             background: var(--bg-panel);
             backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-            overflow: hidden;
-            animation: ig-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: background 0.3s, backdrop-filter 0.3s;
         }
+
+        #ig-adv-notif-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .ig-adv-notif {
+            background: rgba(18, 18, 20, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: translateX(-120%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 300px;
+        }
+        .ig-adv-notif.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .ig-adv-notif-success { border-left: 4px solid #22c55e; }
+        .ig-adv-notif-error { border-left: 4px solid #ef4444; }
+        .ig-adv-notif-warning { border-left: 4px solid #eab308; }
 
         @keyframes ig-slide-in {
             from { opacity: 0; transform: translateY(20px) scale(0.95); }

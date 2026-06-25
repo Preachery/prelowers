@@ -19,7 +19,21 @@ const I18N = {
         popupIg: 'Open Instagram',
         popupClose: 'Close',
         totalVisits: 'Total Visits',
-        totalCopies: 'Script Copies'
+        totalCopies: 'Script Copies',
+        sgTitle: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Script Configuration',
+        sgLang: 'Language',
+        sgSpeed: 'Action Speed',
+        sgNormal: 'Normal (Safe)',
+        sgFast: 'Fast (Risky)',
+        sgSlow: 'Slow (Very Safe)',
+        sgProtect: 'Protect Verified Accounts',
+        faqTitle: 'Frequently Asked Questions',
+        faq1Q: 'Is this safe to use? Will I get banned?',
+        faq1A: 'Absolutely safe. We use dynamic, human-like delays between each action (Anti-Ban Tech) to simulate real user behavior. You are never asked for your password, so your account is secure.',
+        faq2Q: 'How does the script find Ghost Followers?',
+        faq2A: 'The script securely compares your Following list with your Followers list using your browser\'s local memory. It identifies users who do not follow you back instantly.',
+        faq3Q: 'Do I need to pay for a subscription?',
+        faq3A: 'No! Prelowers is a 100% free tool forever. There are no APIs to pay for, and no hidden subscriptions.'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -41,7 +55,21 @@ const I18N = {
         popupIg: 'Instagram\'ı Aç',
         popupClose: 'Kapat',
         totalVisits: 'Toplam Ziyaret',
-        totalCopies: 'Kopyalanma Sayısı'
+        totalCopies: 'Kopyalanma Sayısı',
+        sgTitle: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Script Ayarları',
+        sgLang: 'Dil (Language)',
+        sgSpeed: 'İşlem Hızı',
+        sgNormal: 'Normal (Güvenli)',
+        sgFast: 'Hızlı (Riskli)',
+        sgSlow: 'Yavaş (Çok Güvenli)',
+        sgProtect: 'Mavi Tikli Hesapları Koru',
+        faqTitle: 'Sıkça Sorulan Sorular',
+        faq1Q: 'Ban riski var mı? Güvenli mi?',
+        faq1A: 'Kesinlikle güvenlidir. İşlemler arasına gerçek insan davranışı simüle eden dinamik gecikmeler (Anti-Ban) koyuyoruz. Şifreniz asla istenmez, hesabınız güvendedir.',
+        faq2Q: 'Geri takip etmeyenleri nasıl buluyor?',
+        faq2A: 'Script, takip ettikleriniz ile takipçilerinizin listesini tamamen tarayıcınızın hafızasında karşılaştırır ve sizi geri takip etmeyenleri anında bulur.',
+        faq3Q: 'Ücret ödemem gerekiyor mu?',
+        faq3A: 'Hayır! Prelowers sonsuza kadar %100 ücretsizdir. Satın almanız gereken bir API veya gizli abonelik yoktur.'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -120,6 +148,11 @@ const FLAGS = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA registration failed:', err));
+    }
+
     const copyBtn = document.getElementById('copyBtn');
     const codeViewer = document.getElementById('code-viewer');
     
@@ -155,8 +188,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // In-button Copy Animation & Modal Open
     if(copyBtn) {
         copyBtn.addEventListener('click', async () => {
-            if (!scriptContent || copyBtn.classList.contains('copied')) return;
             try {
+                const scriptUrl = 'tool.js';
+                const res = await fetch(scriptUrl);
+                let scriptContent = await res.text();
+                
+                // --- INJECT PRE-SETTINGS ---
+                const pLang = document.getElementById('sgLang').value || 'en';
+                const pSpeed = document.getElementById('sgSpeed').value || 'normal';
+                const pProtect = document.getElementById('sgProtect').checked;
+                
+                const preSettings = `
+// --- PRELOWERS INJECTED SETTINGS ---
+window.PRELOWERS_INJECTED_SETTINGS = {
+    lang: "${pLang}",
+    speed: "${pSpeed}",
+    protectVerified: ${pProtect}
+};
+// -----------------------------------
+`;
+                scriptContent = preSettings + "\n" + scriptContent;
+                
                 await navigator.clipboard.writeText(scriptContent);
                 copyBtn.classList.add('copied');
                 const span = copyBtn.querySelector('span');
@@ -168,8 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if(tutorialVideo) tutorialVideo.play().catch(e => console.log("Video auto-play prevented"));
                 }
                 
-                // Increment Real Copies API via Serverless Function
-                fetch('/api/telemetry?type=copies&action=up')
+                // Increment Real Copies API
+                fetch('https://api.counterapi.dev/v1/prelowers/copies/up')
                     .then(res => res.json())
                     .then(data => {
                         const copyCountEl = document.getElementById('copyCount');
@@ -221,13 +273,88 @@ document.addEventListener('DOMContentLoaded', () => {
         dropItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const lang = e.currentTarget.getAttribute('data-lang');
+                if(!lang) return; // Skip if it's a theme item
                 currentLang = lang;
                 localStorage.setItem('prelowers-lang', lang);
                 updateLanguage(lang);
                 if(dropMenu) dropMenu.classList.remove('show');
+                
+                // Also update the select dropdown in generator
+                const sgLang = document.getElementById('sgLang');
+                if(sgLang) sgLang.value = lang;
             });
         });
     }
+
+    // Theme Logic
+    const themeDropBtn = document.getElementById('themeDropBtn');
+    const themeDropMenu = document.getElementById('themeDropMenu');
+    const themeItems = document.querySelectorAll('.lang-drop-item[data-theme]');
+    
+    const savedTheme = localStorage.getItem('prelowers-theme') || 'default';
+    document.body.setAttribute('data-theme', savedTheme);
+    
+    if(themeDropBtn && themeDropMenu) {
+        themeDropBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeDropMenu.classList.toggle('show');
+            if(dropMenu) dropMenu.classList.remove('show');
+        });
+    }
+    
+    document.addEventListener('click', (e) => {
+        if(themeDropMenu && themeDropMenu.classList.contains('show') && !e.target.closest('.theme-dropdown')) {
+            themeDropMenu.classList.remove('show');
+        }
+    });
+
+    if(themeItems) {
+        themeItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const theme = e.currentTarget.getAttribute('data-theme');
+                document.body.setAttribute('data-theme', theme);
+                localStorage.setItem('prelowers-theme', theme);
+                themeDropMenu.classList.remove('show');
+            });
+        });
+    }
+
+    // Bind generator select to language logic
+    const sgLangSelect = document.getElementById('sgLang');
+    if(sgLangSelect) {
+        sgLangSelect.value = currentLang;
+        sgLangSelect.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            currentLang = lang;
+            localStorage.setItem('prelowers-lang', lang);
+            updateLanguage(lang);
+        });
+    }
+
+    // FAQ Accordion Logic
+    const faqBtns = document.querySelectorAll('.faq-btn');
+    faqBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.parentElement;
+            const content = item.querySelector('.faq-content');
+            
+            // Close others
+            document.querySelectorAll('.faq-item.active').forEach(otherItem => {
+                if(otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-content').style.maxHeight = null;
+                }
+            });
+
+            if (item.classList.contains('active')) {
+                item.classList.remove('active');
+                content.style.maxHeight = null;
+            } else {
+                item.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
 
     function updateLanguage(lang) {
         const dict = I18N[lang] || I18N['en'];
@@ -284,8 +411,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const visitCountEl = document.getElementById('visitCount');
     const copyCountEl = document.getElementById('copyCount');
     
-    // 1. Fetch and increment Total Visits via Serverless Function
-    fetch('/api/telemetry?type=visits&action=up')
+    // 1. Fetch and increment Total Visits
+    fetch('https://api.counterapi.dev/v1/prelowers/visits/up')
         .then(res => res.json())
         .then(data => {
             if(visitCountEl) {
@@ -297,8 +424,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if(visitCountEl) visitCountEl.innerText = "14,208";
         });
 
-    // 2. Fetch current Total Copies via Serverless Function
-    fetch('/api/telemetry?type=copies&action=get')
+    // 2. Fetch current Total Copies
+    fetch('https://api.counterapi.dev/v1/prelowers/copies')
         .then(res => res.json())
         .then(data => {
             if(copyCountEl) {

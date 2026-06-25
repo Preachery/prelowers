@@ -1,0 +1,17 @@
+{
+  "name": "Prelowers Web",
+  "short_name": "Prelowers",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#020202",
+  "theme_color": "#1c1c1c",
+  "description": "Advanced Instagram Manager",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/174/174855.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
