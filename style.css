@@ -34,29 +34,28 @@ body {
 
 /* 
 ==============================================
-   THE MASTER CANVAS SCALING ENGINE V2
+   NATURAL RESPONSIVE LAYOUT (Scrolling)
 ==============================================
 */
 body {
-    overflow: hidden;
+    /* overflow: hidden; Removed to allow scrolling */
 }
 #scale-wrapper {
-    width: 100vw; height: 100vh; overflow: hidden;
+    width: 100%; min-height: 100vh;
     position: relative;
 }
 
 #canvas-workspace {
-    width: 1540px; height: 1080px;
-    position: absolute; top: 50%; left: 50%;
-    margin-top: -540px; margin-left: -770px;
+    max-width: 1540px; 
+    margin: 0 auto;
+    padding: 60px 20px;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 30px;
-    transform-origin: center center;
+    align-items: center; justify-content: flex-start;
 }
 
 /* Floating Controls */
 .floating-controls {
-    position: absolute; top: 0; right: 20px;
+    position: absolute; top: 20px; right: 20px;
     display: flex; align-items: center; gap: 24px; z-index: 1000;
 }
 .dev-link { color: var(--text-muted); text-decoration: none; font-size: 1rem; transition: color 0.2s; font-weight: 500; }
@@ -64,7 +63,7 @@ body {
 
 /* Telemetry Widget */
 .telemetry-widget {
-    position: absolute; bottom: 24px; left: 24px;
+    position: fixed; bottom: 24px; left: 24px;
     padding: 12px 18px; border-radius: 12px;
     display: flex; flex-direction: column; gap: 10px;
     z-index: 1000; font-family: 'Inter', sans-serif; font-size: 0.85rem;
@@ -96,13 +95,13 @@ body {
 
 
 /* Hero Section */
-.hero-section { text-align: center; margin-bottom: 60px; display: flex; flex-direction: column; align-items: center; }
+.hero-section { text-align: center; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; z-index: 20; }
 .premium-badge {
     padding: 6px 16px; border-radius: 50px; background: rgba(139,92,246,0.1);
     border: 1px solid rgba(139,92,246,0.3); color: var(--accent-2); font-size: 0.85rem; font-weight: 600; margin-bottom: 24px;
 }
 .hero-title { font-size: 4rem; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
-.hero-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+.hero-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; }
 
 /* Animated Copy Button */
 .btn-copy {
@@ -116,20 +115,34 @@ body {
 }
 .btn-copy.copied svg { display: none; }
 
-/* Showcase Row */
-.showcase-row {
-    display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1540px; margin: 0 auto;
+/* 3-Column Main Layout */
+.main-3col-layout {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1540px;
+    gap: 40px;
+    margin-bottom: 60px;
 }
 
-/* Infographics (Absolute Corners Layout) */
-.info-column { 
-    position: absolute;
-    top: 300px; bottom: 100px; /* Spans from Script Settings to Macbook */
-    display: flex; flex-direction: column; justify-content: space-between; 
-    width: 340px; z-index: 10;
+/* Center Column */
+.center-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+    max-width: 800px;
 }
-.info-column:not(.right) { left: 20px; align-items: flex-start; text-align: left; }
-.info-column.right { right: 20px; align-items: flex-end; text-align: right; }
+
+/* Infographics (Left & Right Columns) */
+.info-column { 
+    display: flex; flex-direction: column; justify-content: space-between; 
+    width: 320px; padding: 20px 0;
+}
+.info-column.left { align-items: flex-start; text-align: left; }
+.info-column.right { align-items: flex-end; text-align: right; }
 
 .info-card {
     display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 20px;
