@@ -27,10 +27,58 @@ const I18N = {
         ig1Sub: 'Şifre paylaşımı yok',
         ig2Title: 'Ban Karşıtı Sistem',
         ig2Sub: 'Dinamik bekleme süreleri',
-        ig3Title: 'Sıfır Sunucu Maliyeti',
+        ig3Title: 'Sıfır Maliyet',
         ig3Sub: 'Tamamen ücretsiz',
         ig4Title: 'Akıllı Filtreleme',
         ig4Sub: 'Sahte takipçileri bulun'
+    },
+    es: {
+        badge: 'En el cliente y Seguro',
+        heroTitle: 'Domina tu red de<br><span class="text-gradient">Instagram</span>',
+        heroSub: 'Prelowers es la herramienta definitiva para dejar de seguir a quienes no te siguen sin compartir tu contraseña.',
+        copyBtn: 'Copiar Script',
+        codeReview: 'Revisión de Código — tool.js',
+        toast: '¡Script copiado al portapapeles!',
+        ig1Title: '100% Client-Side',
+        ig1Sub: 'Sin compartir contraseñas',
+        ig2Title: 'Tecnología Anti-Ban',
+        ig2Sub: 'Retrasos dinámicos',
+        ig3Title: 'Cero Costo de API',
+        ig3Sub: 'Uso siempre gratuito',
+        ig4Title: 'Filtro Inteligente',
+        ig4Sub: 'Encuentra seguidores fantasma'
+    },
+    de: {
+        badge: 'Client-Side & Sicher',
+        heroTitle: 'Beherrsche dein<br><span class="text-gradient">Instagram</span> Netzwerk',
+        heroSub: 'Prelowers ist das ultimative Tool, um Nicht-Followern sicher zu entfolgen, ohne dein Passwort zu teilen.',
+        copyBtn: 'Skript kopieren',
+        codeReview: 'Code-Überprüfung — tool.js',
+        toast: 'Skript in die Zwischenablage kopiert!',
+        ig1Title: '100% Client-Side',
+        ig1Sub: 'Keine Passwortfreigabe',
+        ig2Title: 'Anti-Ban Tech',
+        ig2Sub: 'Dynamische Verzögerungen',
+        ig3Title: 'Null API-Kosten',
+        ig3Sub: 'Für immer kostenlos',
+        ig4Title: 'Smart Filter',
+        ig4Sub: 'Finde Geister-Follower'
+    },
+    fr: {
+        badge: 'Côté client & Sécurisé',
+        heroTitle: 'Maîtrisez votre réseau<br><span class="text-gradient">Instagram</span>',
+        heroSub: 'Prelowers est l\'outil ultime pour vous désabonner en toute sécurité sans partager votre mot de passe.',
+        copyBtn: 'Copier le script',
+        codeReview: 'Revue de code — tool.js',
+        toast: 'Script copié dans le presse-papiers!',
+        ig1Title: '100% Côté client',
+        ig1Sub: 'Aucun partage de mot de passe',
+        ig2Title: 'Technologie Anti-Ban',
+        ig2Sub: 'Délais dynamiques',
+        ig3Title: 'Zéro coût d\'API',
+        ig3Sub: 'Utilisation toujours gratuite',
+        ig4Title: 'Filtre intelligent',
+        ig4Sub: 'Trouvez les abonnés fantômes'
     }
 };
 
@@ -38,12 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copyBtn');
     const toast = document.getElementById('toast');
     const codeViewer = document.getElementById('code-viewer');
-    const langSwitcher = document.getElementById('lang-switcher');
+    const langBtns = document.querySelectorAll('.lang-btn');
     let scriptContent = '';
 
     // Initialize Language
     let currentLang = localStorage.getItem('prelowers-lang') || (navigator.language.startsWith('tr') ? 'tr' : 'en');
-    if(langSwitcher) langSwitcher.value = currentLang;
     updateLanguage(currentLang);
 
     // Fetch the script content
@@ -71,17 +118,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if(langSwitcher) {
-        langSwitcher.addEventListener('change', (e) => {
-            currentLang = e.target.value;
-            localStorage.setItem('prelowers-lang', currentLang);
-            updateLanguage(currentLang);
+    if(langBtns) {
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = e.target.getAttribute('data-lang');
+                localStorage.setItem('prelowers-lang', lang);
+                updateLanguage(lang);
+            });
         });
     }
 
     function updateLanguage(lang) {
-        const dict = I18N[lang];
-        if(!dict) return;
+        const dict = I18N[lang] || I18N['en'];
+        
+        // Update active class on buttons
+        if (langBtns) {
+            langBtns.forEach(btn => {
+                if(btn.getAttribute('data-lang') === lang) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
+
         Object.keys(dict).forEach(key => {
             const el = document.getElementById('t-' + key);
             if(el) el.innerHTML = dict[key];
