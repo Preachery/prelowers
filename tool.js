@@ -377,7 +377,7 @@
         let response = await fetch(`/api/v1/friendships/destroy/${id}/`, {
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
-        if (response.ok) return true;
+        if (response.ok) return true;
         response = await fetch(`/web/friendships/${id}/unfollow/`, {
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
@@ -390,8 +390,8 @@
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
         return response.ok;
-    }
     }
+    
     async function fetchConnection(viewerId, type) {
         let cursor = "";
 
@@ -997,13 +997,13 @@
         const notif = document.createElement("div");
         notif.className = `ig-adv-notif ig-adv-notif-${type}`;
         
-        notif.innerHTML = \`
-            <img class="ig-adv-avatar" src="\${user.profile_pic_url}" loading="lazy" onerror="this.style.visibility='hidden'" style="width: 32px; height: 32px; border-radius: 50%;" />
+        notif.innerHTML = `
+            <img class="ig-adv-avatar" src="${user.profile_pic_url}" loading="lazy" onerror="this.style.visibility='hidden'" style="width: 32px; height: 32px; border-radius: 50%;" />
             <div class="ig-adv-user-info" style="display: flex; flex-direction: column; justify-content: center;">
-                <span style="font-weight: 600; font-size: 13px; color: var(--txt-main);">@\${user.username}</span>
-                <span style="font-size: 11px; color: var(--txt-muted); margin-top: 2px;">\${msg}</span>
+                <span style="font-weight: 600; font-size: 13px; color: var(--txt-main);">@${user.username}</span>
+                <span style="font-size: 11px; color: var(--txt-muted); margin-top: 2px;">${msg}</span>
             </div>
-        \`;
+        `;
 
         container.appendChild(notif);
         
