@@ -420,6 +420,9 @@
 
             state.progress.current = state.usersMap.size;
             state.progress.total = 0; // REST API does not provide a total count
+            if (json.users && json.users.length > 0) {
+                state.progress.lastUser = json.users[json.users.length - 1].username;
+            }
             renderBody(); // Update UI
 
             cursor = json.next_max_id || "";
@@ -680,6 +683,7 @@
 
     function viewScanning() {
         const percent = state.progress.total ? Math.round((state.progress.current / state.progress.total) * 100) : 0;
+        const lastUserHtml = state.progress.lastUser ? `<p style="font-size: 11px; color: var(--accent); margin-top: 8px;">@${state.progress.lastUser}...</p>` : '';
         return `
             <div class="ig-adv-center" style="padding-top: 40px;">
                 <h3 style="margin-bottom: 8px; font-size: 14px; text-align: center;">${state.progress.label}</h3>
@@ -687,6 +691,7 @@
                     <div class="ig-adv-progress-fill" style="width: ${state.progress.total ? percent : 100}%; ${!state.progress.total ? 'animation: ig-pulse 1.5s infinite;' : ''}"></div>
                 </div>
                 <p style="color: var(--txt-muted); margin-top: 12px;">${t("found")}${state.progress.current}</p>
+                ${lastUserHtml}
                 <button class="ig-adv-btn ghost" id="btn-cancel-scan" style="margin-top: 24px;">${t("cancel")}</button>
             </div>
         `;
