@@ -82,11 +82,11 @@ const I18N = {
 };
 
 const FLAGS = {
-    en: '🇬🇧',
-    tr: '🇹🇷',
-    es: '🇪🇸',
-    de: '🇩🇪',
-    fr: '🇫🇷'
+    en: '<img src="https://flagcdn.com/w20/gb.png" width="18" alt="EN" style="vertical-align: middle;">',
+    tr: '<img src="https://flagcdn.com/w20/tr.png" width="18" alt="TR" style="vertical-align: middle;">',
+    es: '<img src="https://flagcdn.com/w20/es.png" width="18" alt="ES" style="vertical-align: middle;">',
+    de: '<img src="https://flagcdn.com/w20/de.png" width="18" alt="DE" style="vertical-align: middle;">',
+    fr: '<img src="https://flagcdn.com/w20/fr.png" width="18" alt="FR" style="vertical-align: middle;">'
 };
 
 document.addEventListener('DOMContentLoaded', () => {

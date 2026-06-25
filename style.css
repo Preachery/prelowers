@@ -121,7 +121,7 @@ body {
     flex: 1; max-width: 800px; display: flex; justify-content: center; align-items: center; height: 100%;
 }
 .macbook {
-    width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center;
+    width: 100%; max-width: min(800px, 75vh); display: flex; flex-direction: column; align-items: center;
 }
 .macbook-lid {
     width: 100%; aspect-ratio: 16/10; background: #1a1a1a; border-radius: 16px 16px 0 0;
