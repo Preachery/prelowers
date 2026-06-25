@@ -48,7 +48,9 @@ const I18N = {
         faq6Q: 'How do I use this script? (Step by Step)',
         faq6A: '1. Click "Copy Script" above.<br>2. Open instagram.com on your computer and log in.<br>3. Press F12 (or right-click -> Inspect) to open Developer Tools.<br>4. Click on the "Console" tab.<br>5. Paste the code and press Enter.',
         faq7Q: 'My account is private, will it work?',
-        faq7A: 'Yes, absolutely! Since the script runs directly in your own browser using your active session, it works perfectly on private accounts without needing any external API access.'
+        faq7A: 'Yes, absolutely! Since the script runs directly in your own browser using your active session, it works perfectly on private accounts without needing any external API access.',
+        installApp: 'Install App',
+        sgGhosts: 'Find Ghost Followers (Scans engagement on last 3 posts, slow)'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -99,7 +101,9 @@ const I18N = {
         faq6Q: 'Nasıl kullanılır? (Adım Adım Kurulum)',
         faq6A: '1. Yukarıdaki "Kodu Kopyala" butonuna tıklayın.<br>2. Bilgisayarınızdan instagram.com\'a girin.<br>3. F12 tuşuna basarak (veya sağ tık -> İncele) Geliştirici Araçlarını açın.<br>4. "Console" sekmesine geçin.<br>5. Kodu yapıştırın ve Enter tuşuna basın.',
         faq7Q: 'Hesabım gizli, çalışır mı?',
-        faq7A: 'Kesinlikle evet! Script dışarıdan bir API yerine doğrudan sizin aktif oturumunuzu ve tarayıcınızı kullandığı için gizli hesaplarda bile %100 sorunsuz çalışır.'
+        faq7A: 'Kesinlikle evet! Script dışarıdan bir API yerine doğrudan sizin aktif oturumunuzu ve tarayıcınızı kullandığı için gizli hesaplarda bile %100 sorunsuz çalışır.',
+        installApp: 'Uygulamayı Yükle',
+        sgGhosts: 'Hayalet Takipçileri Bul (Son 3 gönderiyi tarar, yavaş)'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -183,6 +187,27 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA registration failed:', err));
     }
 
+    // PWA Installation Logic
+    let deferredPrompt;
+    const btnInstall = document.getElementById('btnInstall');
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if(btnInstall) btnInstall.style.display = 'inline-flex';
+    });
+    if(btnInstall) {
+        btnInstall.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    btnInstall.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+
     const copyBtn = document.getElementById('copyBtn');
     const codeViewer = document.getElementById('code-viewer');
     
@@ -241,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pProtect = document.getElementById('sgProtect').checked;
                 const pTheme = document.getElementById('sgTheme') ? document.getElementById('sgTheme').value : 'dark';
                 const pVfx = document.getElementById('sgVfx') ? document.getElementById('sgVfx').checked : true;
+                const pGhosts = document.getElementById('sgGhosts') ? document.getElementById('sgGhosts').checked : false;
                 
                 const preSettings = `
 // --- PRELOWERS INJECTED SETTINGS ---
@@ -249,7 +275,8 @@ window.PRELOWERS_INJECTED_SETTINGS = {
     speed: "${pSpeed}",
     protectVerified: ${pProtect},
     theme: "${pTheme}",
-    visualEffects: ${pVfx}
+    visualEffects: ${pVfx},
+    findGhosts: ${pGhosts}
 };
 // -----------------------------------
 `;

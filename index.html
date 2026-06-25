@@ -36,10 +36,16 @@
         <!-- The Master Canvas: Fixed dimensions (e.g. 1400x800), scaled via JS -->
         <div id="canvas-workspace">
             
-            <!-- Floating Controls (Replaces Navbar) -->
+            <!-- Floating Controls (Top Right) -->
             <div class="floating-controls">
                 <a href="https://instagram.com/preacherion" target="_blank" class="dev-link">@preacherion</a>
-                <div class="lang-dropdown theme-dropdown">
+                
+                <button id="btnInstall" class="lang-drop-btn" style="display: none; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.5); color: #fff;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
+                    <span id="t-installApp">Install App</span>
+                </button>
+
+                <div class="theme-dropdown">
                     <button class="lang-drop-btn glass-panel" id="themeDropBtn" title="Change Theme">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42 1.42"/></svg>
                     </button>
@@ -183,6 +189,15 @@
                                 <label id="t-sgVfx">Enable Visual Effects (Glassmorphism)</label>
                                 <label class="switch">
                                     <input type="checkbox" id="sgVfx" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <!-- Ghost Follower Scanner -->
+                            <div class="sg-row toggle-row">
+                                <label id="t-sgGhosts">Find Ghost Followers (Scans engagement on last 3 posts)</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="sgGhosts">
                                     <span class="slider"></span>
                                 </label>
                             </div>

@@ -391,13 +391,14 @@
         });
         return response.ok;
     }
+    }
     async function fetchConnection(viewerId, type) {
         let cursor = "";
 
         while (true) {
             if (state.scanCancelled) break;
 
-            let url = `/api/v1/friendships/${viewerId}/${type}/?count=24`;
+            let url = `/api/v1/friendships/${viewerId}/${type}/?count=20`;
             if (cursor) {
                 url += `&max_id=${encodeURIComponent(cursor)}`;
             }
@@ -452,6 +453,10 @@
             renderBody();
             await fetchConnection(viewerId, 'followers');
 
+            if (!state.scanCancelled && state.settings.findGhosts) {
+                await scanGhosts(viewerId);
+            }
+
             if (!state.scanCancelled) {
                 state.mode = "results";
                 renderBody();
@@ -460,6 +465,39 @@
             alert("Scan failed: " + err.message);
             state.mode = "idle";
             renderBody();
+        }
+    }
+
+    async function scanGhosts(viewerId) {
+        state.progress.label = "Scanning recent posts for Ghost analysis...";
+        renderBody();
+        try {
+            const feedUrl = `/api/v1/feed/user/${viewerId}/?count=3`;
+            const feedJson = await igFetch(feedUrl);
+            const items = feedJson.items || [];
+            const likersSet = new Set();
+            
+            for (let i = 0; i < Math.min(items.length, 3); i++) {
+                if (state.scanCancelled) break;
+                const mediaId = items[i].id;
+                state.progress.label = `Scanning engagement on post ${i + 1}...`;
+                renderBody();
+                
+                try {
+                    const likersJson = await igFetch(`/api/v1/media/${mediaId}/likers/`);
+                    const users = likersJson.users || [];
+                    users.forEach(u => likersSet.add(String(u.pk || u.pk_id || u.id)));
+                } catch(e) {}
+                await sleep(randomBetween(1500, 3000));
+            }
+            
+            for (const [id, user] of state.usersMap.entries()) {
+                if (user.is_following_viewer && !likersSet.has(id)) {
+                    user.is_ghost = true;
+                }
+            }
+        } catch (err) {
+            console.log("Ghost scan failed", err);
         }
     }
 
@@ -704,6 +742,7 @@
                             <div class="ig-adv-tags">
                                 ${u.is_followed_by_viewer ? `<span class="ig-adv-tag blue">${t("youFollow")}</span>` : `<span class="ig-adv-tag gray">${t("notFollowing")}</span>`}
                                 ${u.is_following_viewer ? `<span class="ig-adv-tag green">${t("followsYou")}</span>` : `<span class="ig-adv-tag red">${t("notFollower")}</span>`}
+                                ${u.is_ghost ? `<span class="ig-adv-tag danger" style="background: rgba(239,68,68,0.2); color: #ef4444;">Ghost</span>` : ''}
                             </div>
                         </div>
                         <div class="ig-adv-cols">
@@ -716,13 +755,16 @@
                 }).join('')}
             </div>
 
-            <div class="ig-adv-footer">
+            <div class="ig-adv-footer" style="justify-content: space-between; gap: 10px;">
                 <div id="ig-adv-task-info" style="font-size: 12px; color: var(--txt-muted);">
                     ${t("tasks")}: <span style="color: var(--accent);">${totalUnfollow} ${t("unfollow")}</span>, <span style="color: var(--danger);">${totalRemove} ${t("remove")}</span>
                 </div>
-                <button class="ig-adv-btn primary" id="btn-execute" ${(totalUnfollow === 0 && totalRemove === 0) ? 'disabled' : ''}>
-                    ${t("executeActions")}
-                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="ig-adv-btn" id="btn-dl-report" style="background:#3b82f6; color:#fff; border:none;">${t("downloadReport")}</button>
+                    <button class="ig-adv-btn primary" id="btn-execute" ${(totalUnfollow === 0 && totalRemove === 0) ? 'disabled' : ''}>
+                        ${t("executeActions")}
+                    </button>
+                </div>
             </div>
         `;
     }
@@ -974,21 +1016,84 @@
     }
 
     function generateHTMLReport() {
-        let html = `<html><head><meta charset="utf-8"><title>Prelowers Report</title></head><body style="font-family:-apple-system, BlinkMacSystemFont, sans-serif; background:#f4f4f9; padding:40px; color:#333;">`;
-        html += `<h2 style="color:#60a5fa;">Prelowers Analysis & Action Report</h2>`;
-        html += `<p><strong>Date:</strong> ${new Date().toLocaleString()}</p>`;
-        html += `<table border="1" cellpadding="10" style="border-collapse:collapse; width:100%; max-width:800px; background:#fff; border-color:#e5e7eb;">
-                 <tr style="background:#f9fafb;"><th style="text-align:left;">Action</th><th style="text-align:left;">Username</th><th style="text-align:left;">Status</th></tr>`;
+        let isActionReport = state.mode === 'done' && state.logs.length > 0;
+        let totalUsers = state.usersMap.size;
+        let ghosts = 0;
+        let notFollowingBack = 0;
+        let notFollower = 0;
         
-        state.logs.forEach(log => {
-            const action = log.task.type === 'unfollow' ? 'Unfollow' : 'Remove Follower';
-            const status = log.ok ? 'Success' : 'Failed';
-            const color = log.ok ? '#16a34a' : '#dc2626';
-            html += `<tr><td>${action}</td><td><a href="https://instagram.com/${log.user.username}" target="_blank" style="color:#2563eb; text-decoration:none;">@${log.user.username}</a></td><td style="color:${color}; font-weight:600;">${status}</td></tr>`;
+        Array.from(state.usersMap.values()).forEach(u => {
+            if(u.is_ghost) ghosts++;
+            if(u.is_followed_by_viewer && !u.is_following_viewer) notFollowingBack++;
+            if(u.is_following_viewer && !u.is_followed_by_viewer) notFollower++;
         });
+
+        let html = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Prelowers Premium Report</title>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0f0f13; color: #f3f4f6; padding: 40px; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { background: linear-gradient(135deg, #60a5fa, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin:0 0 10px 0; font-size: 32px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .stat-card h3 { margin: 0 0 10px 0; font-size: 14px; color: #9ca3af; }
+        .stat-card .val { font-size: 36px; font-weight: 700; color: #fff; }
+        .stat-card.ghost .val { color: #ef4444; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.03); border-radius: 12px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { background: rgba(0,0,0,0.3); color: #9ca3af; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        a { color: #60a5fa; text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        .tag { font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: 600; display: inline-block; margin-right: 4px; }
+        .tag.ghost { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .tag.success { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .tag.fail { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Prelowers Report</h1>
+            <p style="color: #9ca3af;">Generated on ${new Date().toLocaleString()}</p>
+        </div>
         
-        html += `</table></body></html>`;
-        
+        <div class="stats-grid">
+            <div class="stat-card"><h3>Total Users Scanned</h3><div class="val">${totalUsers}</div></div>
+            <div class="stat-card ghost"><h3>Ghost Followers</h3><div class="val">${ghosts}</div></div>
+            <div class="stat-card"><h3>Not Following Back</h3><div class="val">${notFollowingBack}</div></div>
+        </div>
+
+        <h2 style="font-size: 18px; margin-bottom: 20px;">${isActionReport ? 'Action Logs' : 'Scan Results'}</h2>
+        <table>
+            <tr><th>User</th>${isActionReport ? '<th>Action</th><th>Status</th>' : '<th>Tags</th>'}</tr>`;
+
+        if (isActionReport) {
+            state.logs.forEach(log => {
+                const action = log.task.type === 'unfollow' ? 'Unfollow' : 'Remove';
+                const statusTag = log.ok ? '<span class="tag success">Success</span>' : '<span class="tag fail">Failed</span>';
+                html += `<tr><td><a href="https://instagram.com/${log.user.username}" target="_blank">@${log.user.username}</a></td><td>${action}</td><td>${statusTag}</td></tr>`;
+            });
+        } else {
+            Array.from(state.usersMap.values()).forEach(u => {
+                let tags = [];
+                if(u.is_ghost) tags.push('<span class="tag ghost">Ghost</span>');
+                if(u.is_followed_by_viewer && !u.is_following_viewer) tags.push('<span class="tag" style="background:rgba(156,163,175,0.15); color:#9ca3af;">Not Following Back</span>');
+                if(!tags.length) tags.push('<span class="tag" style="background:rgba(255,255,255,0.1); color:#fff;">Mutual / Safe</span>');
+                html += `<tr><td><a href="https://instagram.com/${u.username}" target="_blank">@${u.username}</a></td><td>${tags.join(' ')}</td></tr>`;
+            });
+        }
+
+        html += `
+        </table>
+    </div>
+</body>
+</html>`;
+
         const blob = new Blob([html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
