@@ -179,9 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('canvas-workspace');
         if (!wrapper || !canvas) return;
         
-        // The master canvas is built for 1400x850
+        // The master canvas is built for 1400x1000
         const CANVAS_W = 1400;
-        const CANVAS_H = 850;
+        const CANVAS_H = 1000;
         
         // Calculate the scale needed to fit the viewport
         const scaleX = window.innerWidth / CANVAS_W;
