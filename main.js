@@ -18,8 +18,8 @@ const I18N = {
         popupDesc: 'Watch the quick 10-second tutorial below, then open Instagram to run the script.',
         popupIg: 'Open Instagram',
         popupClose: 'Close',
-        liveUsers: 'Live',
-        totalUses: 'Total Visits'
+        totalVisits: 'Total Visits',
+        totalCopies: 'Script Copies'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -40,8 +40,8 @@ const I18N = {
         popupDesc: 'Kodu nasıl kullanacağınızı görmek için aşağıdaki 10 saniyelik videoyu izleyin, ardından Instagram\'ı açın.',
         popupIg: 'Instagram\'ı Aç',
         popupClose: 'Kapat',
-        liveUsers: 'Canlı',
-        totalUses: 'Toplam Ziyaret'
+        totalVisits: 'Toplam Ziyaret',
+        totalCopies: 'Kopyalanma Sayısı'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -62,8 +62,8 @@ const I18N = {
         popupDesc: 'Mira el tutorial de 10 segundos a continuación, luego abre Instagram para ejecutar el script.',
         popupIg: 'Abrir Instagram',
         popupClose: 'Cerrar',
-        liveUsers: 'En Vivo',
-        totalUses: 'Visitas Totales'
+        totalVisits: 'Visitas Totales',
+        totalCopies: 'Copias de Script'
     },
     de: {
         badge: 'Client-Side & Sicher',
@@ -84,8 +84,8 @@ const I18N = {
         popupDesc: 'Sieh dir das kurze 10-Sekunden-Tutorial an und öffne dann Instagram, um das Skript auszuführen.',
         popupIg: 'Instagram öffnen',
         popupClose: 'Schließen',
-        liveUsers: 'Live',
-        totalUses: 'Gesamtbesuche'
+        totalVisits: 'Gesamtbesuche',
+        totalCopies: 'Skript Kopien'
     },
     fr: {
         badge: 'Côté client & Sécurisé',
@@ -106,8 +106,8 @@ const I18N = {
         popupDesc: 'Regardez le tutoriel de 10 secondes ci-dessous, puis ouvrez Instagram pour exécuter le script.',
         popupIg: 'Ouvrir Instagram',
         popupClose: 'Fermer',
-        liveUsers: 'En Direct',
-        totalUses: 'Visites Totales'
+        totalVisits: 'Visites Totales',
+        totalCopies: 'Copies du Script'
     }
 };
 
@@ -167,6 +167,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     tutorialModal.classList.add('show');
                     if(tutorialVideo) tutorialVideo.play().catch(e => console.log("Video auto-play prevented"));
                 }
+                
+                // Increment Real Copies API
+                fetch('https://api.counterapi.dev/v1/prelowers/copies/up')
+                    .then(res => res.json())
+                    .then(data => {
+                        const copyCountEl = document.getElementById('copyCount');
+                        if(copyCountEl && data.count) copyCountEl.innerText = data.count.toLocaleString();
+                    }).catch(e => console.log('Telemetry offline'));
                 
                 setTimeout(() => {
                     copyBtn.classList.remove('copied');
@@ -273,31 +281,27 @@ document.addEventListener('DOMContentLoaded', () => {
     scaleCanvas();
 
     // --- TELEMETRY WIDGET LOGIC ---
-    const liveCountEl = document.getElementById('liveCount');
-    const totalCountEl = document.getElementById('totalCount');
+    const visitCountEl = document.getElementById('visitCount');
+    const copyCountEl = document.getElementById('copyCount');
     
-    // Simulate live users fluctuating
-    function updateLiveUsers() {
-        if(liveCountEl) {
-            const base = 12;
-            const variance = Math.floor(Math.random() * 8) - 3; // -3 to +4
-            liveCountEl.innerText = base + variance;
-        }
-        setTimeout(updateLiveUsers, 3000 + Math.random() * 4000);
-    }
-    updateLiveUsers();
-
-    // Fetch total uses from a free public counter API
-    fetch('https://api.counterapi.dev/v1/preacherion/prelowers_uses/up')
+    // 1. Fetch and increment Total Visits
+    fetch('https://api.counterapi.dev/v1/prelowers/visits/up')
         .then(res => res.json())
         .then(data => {
-            if(totalCountEl && data.count) {
-                totalCountEl.innerText = data.count.toLocaleString();
-            }
+            if(visitCountEl && data.count) visitCountEl.innerText = data.count.toLocaleString();
         })
         .catch(() => {
-            // Fallback realistic number if API is blocked/down
-            if(totalCountEl) totalCountEl.innerText = "14,208";
+            if(visitCountEl) visitCountEl.innerText = "Error"; // Or silent fallback
+        });
+
+    // 2. Fetch current Total Copies (without incrementing)
+    fetch('https://api.counterapi.dev/v1/prelowers/copies')
+        .then(res => res.json())
+        .then(data => {
+            if(copyCountEl && data.count) copyCountEl.innerText = data.count.toLocaleString();
+        })
+        .catch(() => {
+            if(copyCountEl) copyCountEl.innerText = "--";
         });
 
 });
