@@ -14,7 +14,7 @@
     const APP_ID = "ig-adv-app";
     const STYLE_ID = "ig-adv-style";
     const STORAGE_KEY = "prelowers_settings_v1";
-    
+
     const IG_HEADERS = {
         "x-ig-app-id": "936619743392459",
         "x-requested-with": "XMLHttpRequest"
@@ -151,9 +151,7 @@
 
     function t(key) {
         return I18N[state.settings.lang][key] || key;
-    }
-
-    // --- Helpers ---
+    }
     function getCookie(name) {
         const match = document.cookie.match(new RegExp("(^|; )" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "=([^;]*)"));
         return match ? decodeURIComponent(match[2]) : null;
@@ -167,8 +165,7 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function getDelay() {
-        // speed setting multiplier
+    function getDelay() {
         const baseMin = 4000;
         const baseMax = 8000;
         if (state.settings.speed === 'fast') return randomBetween(2000, 4000);
@@ -190,9 +187,7 @@
             });
         }
         return state.usersMap.get(id);
-    }
-
-    // --- API Calls ---
+    }
     async function igFetch(url, init = {}) {
         let attempt = 0;
         while (attempt < 3) {
@@ -217,8 +212,7 @@
         let response = await fetch(`/api/v1/friendships/destroy/${id}/`, {
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
-        if (response.ok) return true;
-        // Fallback
+        if (response.ok) return true;
         response = await fetch(`/web/friendships/${id}/unfollow/`, {
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
@@ -231,22 +225,20 @@
             method: "POST", credentials: "include", headers: { ...IG_HEADERS, ...headers }
         });
         return response.ok;
-    }
-
-    // --- Core Logic ---
+    }
     async function fetchConnection(viewerId, type) {
         let cursor = "";
-        
+
         while (true) {
             if (state.scanCancelled) break;
-            
+
             let url = `/api/v1/friendships/${viewerId}/${type}/?count=24`;
             if (cursor) {
                 url += `&max_id=${encodeURIComponent(cursor)}`;
             }
-            
+
             const json = await igFetch(url);
-            
+
             if (!json || !json.users) {
                 throw new Error(t("apiError") + JSON.stringify(json).substring(0, 200));
             }
@@ -276,7 +268,7 @@
         state.selectedUnfollow.clear();
         state.selectedRemove.clear();
         state.mode = "scanning";
-        
+
         try {
             const viewerId = getCookie("ds_user_id");
             if (!viewerId) throw new Error(t("loginError"));
@@ -317,9 +309,7 @@
 
         state.mode = "executing";
         state.execCancelled = false;
-        state.logs = [];
-        
-        // Compile task list
+        state.logs = [];
         const tasks = [];
         state.selectedUnfollow.forEach(id => tasks.push({ id, type: 'unfollow' }));
         state.selectedRemove.forEach(id => tasks.push({ id, type: 'remove_follower' }));
@@ -366,17 +356,13 @@
 
         state.mode = "done";
         renderBody();
-    }
-
-    // --- UI Rendering ---
+    }
     function applyTheme() {
         const root = document.getElementById(APP_ID);
         if (!root) return;
         const opacity = state.settings.opacity / 100;
         root.style.setProperty('--bg-panel', `rgba(18, 18, 20, ${opacity})`);
-        root.style.setProperty('--glass-blur', `${state.settings.blur}px`);
-        
-        // Update header texts that might have changed language
+        root.style.setProperty('--glass-blur', `${state.settings.blur}px`);
         const titleEl = root.querySelector('.ig-adv-title strong');
         const devEl = root.querySelector('.ig-adv-title span');
         if (titleEl) titleEl.textContent = t("title");
@@ -454,26 +440,21 @@
         else if (state.mode === "settings") body.innerHTML = viewSettings();
 
         bindEvents();
-    }
-
-    // --- Dynamic DOM Updates ---
-    function updateSelectionDOM() {
-        // Instead of re-rendering, just update the footer to prevent scrolling issues
+    }
+    function updateSelectionDOM() {
         const totalUnfollow = state.selectedUnfollow.size;
         const totalRemove = state.selectedRemove.size;
-        
+
         const taskInfo = document.getElementById("ig-adv-task-info");
         if (taskInfo) {
             taskInfo.innerHTML = `${t("tasks")}: <span style="color: var(--accent);">${totalUnfollow} ${t("unfollow")}</span>, <span style="color: var(--danger);">${totalRemove} ${t("remove")}</span>`;
         }
-        
+
         const execBtn = document.getElementById("btn-execute");
         if (execBtn) {
             execBtn.disabled = (totalUnfollow === 0 && totalRemove === 0);
         }
-    }
-
-    // --- Views ---
+    }
     function viewIdle() {
         return `
             <div class="ig-adv-center">
@@ -505,9 +486,7 @@
         const query = state.searchQuery.toLowerCase();
         let displayUsers = Array.from(state.usersMap.values()).filter(u => {
             return u.username.toLowerCase().includes(query) || u.full_name.toLowerCase().includes(query);
-        });
-
-        // Sorting: non-followers first
+        });
         displayUsers.sort((a, b) => {
             if (a.is_followed_by_viewer && !a.is_following_viewer && !(b.is_followed_by_viewer && !b.is_following_viewer)) return -1;
             if (!(a.is_followed_by_viewer && !a.is_following_viewer) && b.is_followed_by_viewer && !b.is_following_viewer) return 1;
@@ -521,7 +500,7 @@
             <div class="ig-adv-results-header">
                 <input type="text" class="ig-adv-search" id="ig-adv-search" placeholder="${t("search")}" value="${state.searchQuery}" />
             </div>
-            
+
             <div class="ig-adv-list-header">
                 <div style="flex:1">User</div>
                 <div class="ig-adv-cols">
@@ -536,11 +515,9 @@
                 ${displayUsers.map(u => {
                     const canUnfollow = u.is_followed_by_viewer;
                     const canRemove = u.is_following_viewer;
-                    
+
                     const isUnfChecked = state.selectedUnfollow.has(u.id);
-                    const isRemChecked = state.selectedRemove.has(u.id);
-                    
-                    // Master is checked if all POSSIBLE actions are checked
+                    const isRemChecked = state.selectedRemove.has(u.id);
                     let masterChecked = false;
                     if (canUnfollow && canRemove) masterChecked = isUnfChecked && isRemChecked;
                     else if (canUnfollow) masterChecked = isUnfChecked;
@@ -629,7 +606,7 @@
         return `
             <div style="padding: 20px; overflow-y: auto; flex: 1;">
                 <h3 style="margin-bottom: 20px;">${t("settings")}</h3>
-                
+
                 <div class="ig-adv-setting-group">
                     <label>${t("language")}</label>
                     <select id="set-lang" class="ig-adv-input">
@@ -660,9 +637,7 @@
                 <button class="ig-adv-btn primary" id="btn-save-settings" style="width: 100%; margin-top: 20px;">${t("saveSettings")}</button>
             </div>
         `;
-    }
-
-    // --- Events ---
+    }
     function bindEvents() {
         document.getElementById("btn-start-scan")?.addEventListener("click", startScan);
         document.getElementById("btn-cancel-scan")?.addEventListener("click", () => { state.scanCancelled = true; });
@@ -671,9 +646,7 @@
         document.getElementById("btn-back-results")?.addEventListener("click", () => {
             state.mode = "results";
             renderBody();
-        });
-
-        // Settings View Events
+        });
         const saveBtn = document.getElementById("btn-save-settings");
         if (saveBtn) {
             document.getElementById("set-blur")?.addEventListener("input", (e) => {
@@ -700,15 +673,12 @@
             searchInput.addEventListener("input", (e) => {
                 state.searchQuery = e.target.value;
                 renderBody();
-            });
-            // Refocus search if it was focused before re-render
+            });
             searchInput.focus();
             const val = searchInput.value;
             searchInput.value = '';
             searchInput.value = val;
-        }
-
-        // Checkbox Delegation
+        }
         const list = document.querySelector(".ig-adv-list");
         if (list) {
             list.addEventListener("change", (e) => {
@@ -733,8 +703,7 @@
                         if(cbRem && !cbRem.disabled) cbRem.checked = check;
                     }
                 } else if (target.classList.contains("cb-unfollow")) {
-                    if (target.checked) state.selectedUnfollow.add(id); else state.selectedUnfollow.delete(id);
-                    // Update master checkbox visually if needed
+                    if (target.checked) state.selectedUnfollow.add(id); else state.selectedUnfollow.delete(id);
                     const row = target.closest('.ig-adv-row');
                     const cbMaster = row.querySelector('.cb-master');
                     if(cbMaster) {
@@ -745,8 +714,7 @@
                         else cbMaster.checked = target.checked;
                     }
                 } else if (target.classList.contains("cb-remove")) {
-                    if (target.checked) state.selectedRemove.add(id); else state.selectedRemove.delete(id);
-                    // Update master checkbox visually if needed
+                    if (target.checked) state.selectedRemove.add(id); else state.selectedRemove.delete(id);
                     const row = target.closest('.ig-adv-row');
                     const cbMaster = row.querySelector('.cb-master');
                     if(cbMaster) {
@@ -756,9 +724,7 @@
                         if (canUnf && canRem) cbMaster.checked = target.checked && isUnfChecked;
                         else cbMaster.checked = target.checked;
                     }
-                }
-
-                // FIX: Update DOM directly instead of full re-render
+                }
                 updateSelectionDOM();
             });
         }
@@ -769,7 +735,7 @@
         let startX, startY, initialX, initialY;
 
         handle.addEventListener("mousedown", dragStart);
-        
+
         function dragStart(e) {
             if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
             initialX = el.offsetLeft;
@@ -797,9 +763,7 @@
             document.removeEventListener("mousemove", drag);
             document.removeEventListener("mouseup", dragEnd);
         }
-    }
-
-    // --- CSS ---
+    }
     const CSS = `
         #${APP_ID} {
             --bg-panel: rgba(18, 18, 20, 0.75);
@@ -813,7 +777,7 @@
             --txt-main: #f3f4f6;
             --txt-muted: #9ca3af;
             --glass-blur: 20px;
-            
+
             position: fixed;
             z-index: 999999;
             top: 0; left: 0;
@@ -925,11 +889,11 @@
         }
 
         .ig-adv-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        
+
         .ig-adv-btn.primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3); }
         .ig-adv-btn.primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
         .ig-adv-btn.primary:active:not(:disabled) { transform: translateY(1px); }
-        
+
         .ig-adv-btn.ghost { background: transparent; border: 1px solid var(--border-color); color: var(--txt-main); }
         .ig-adv-btn.ghost:hover { background: rgba(255,255,255,0.05); }
         .ig-adv-btn.ghost.danger:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
@@ -983,7 +947,7 @@
         .ig-adv-row:hover { background: var(--bg-hover); }
 
         .ig-adv-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
-        
+
         .ig-adv-user-info { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
         .ig-adv-username { font-size: 14px; font-weight: 600; color: var(--txt-main); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ig-adv-username:hover { text-decoration: underline; color: var(--accent); }
@@ -1025,9 +989,7 @@
         .ig-adv-range {
             width: 100%; accent-color: var(--accent);
         }
-    `;
-
-    // Init
+    `;
     mount();
 
 })();

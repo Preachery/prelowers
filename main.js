@@ -1,12 +1,11 @@
-/* PRELOWERS CUSTOM LOGIC */
 const I18N = {
     en: {
         badge: 'Client-Side & Secure',
         heroTitle: 'Master your<br><span class="text-gradient">Instagram</span> network',
         heroSub: 'Prelowers is the ultimate tool to securely unfollow non-followers and remove ghost followers without sharing your password.',
         copyBtn: 'Copy Script',
+        copyBtnSuccess: 'Copied! ✔️',
         codeReview: 'Code Review — tool.js',
-        toast: 'Script copied to clipboard!',
         ig1Title: '100% Client-Side',
         ig1Sub: 'No password sharing',
         ig2Title: 'Anti-Ban Tech',
@@ -21,8 +20,8 @@ const I18N = {
         heroTitle: '<span class="text-gradient">Instagram</span> Ağınıza<br>Hükmedin',
         heroSub: 'Prelowers, şifrenizi paylaşmadan sizi takip etmeyenleri bulup takipten çıkabileceğiniz en güvenilir araçtır.',
         copyBtn: 'Kodu Kopyala',
+        copyBtnSuccess: 'Kopyalandı! ✔️',
         codeReview: 'Kod İnceleme — tool.js',
-        toast: 'Kod panoya kopyalandı!',
         ig1Title: '%100 İstemci Tabanlı',
         ig1Sub: 'Şifre paylaşımı yok',
         ig2Title: 'Ban Karşıtı Sistem',
@@ -37,14 +36,14 @@ const I18N = {
         heroTitle: 'Domina tu red de<br><span class="text-gradient">Instagram</span>',
         heroSub: 'Prelowers es la herramienta definitiva para dejar de seguir a quienes no te siguen sin compartir tu contraseña.',
         copyBtn: 'Copiar Script',
+        copyBtnSuccess: '¡Copiado! ✔️',
         codeReview: 'Revisión de Código — tool.js',
-        toast: '¡Script copiado al portapapeles!',
         ig1Title: '100% Client-Side',
         ig1Sub: 'Sin compartir contraseñas',
         ig2Title: 'Tecnología Anti-Ban',
         ig2Sub: 'Retrasos dinámicos',
         ig3Title: 'Cero Costo de API',
-        ig3Sub: 'Uso siempre gratuito',
+        ig3Sub: 'Uso gratuito',
         ig4Title: 'Filtro Inteligente',
         ig4Sub: 'Encuentra seguidores fantasma'
     },
@@ -53,8 +52,8 @@ const I18N = {
         heroTitle: 'Beherrsche dein<br><span class="text-gradient">Instagram</span> Netzwerk',
         heroSub: 'Prelowers ist das ultimative Tool, um Nicht-Followern sicher zu entfolgen, ohne dein Passwort zu teilen.',
         copyBtn: 'Skript kopieren',
+        copyBtnSuccess: 'Kopiert! ✔️',
         codeReview: 'Code-Überprüfung — tool.js',
-        toast: 'Skript in die Zwischenablage kopiert!',
         ig1Title: '100% Client-Side',
         ig1Sub: 'Keine Passwortfreigabe',
         ig2Title: 'Anti-Ban Tech',
@@ -69,31 +68,40 @@ const I18N = {
         heroTitle: 'Maîtrisez votre réseau<br><span class="text-gradient">Instagram</span>',
         heroSub: 'Prelowers est l\'outil ultime pour vous désabonner en toute sécurité sans partager votre mot de passe.',
         copyBtn: 'Copier le script',
+        copyBtnSuccess: 'Copié! ✔️',
         codeReview: 'Revue de code — tool.js',
-        toast: 'Script copié dans le presse-papiers!',
         ig1Title: '100% Côté client',
         ig1Sub: 'Aucun partage de mot de passe',
         ig2Title: 'Technologie Anti-Ban',
         ig2Sub: 'Délais dynamiques',
         ig3Title: 'Zéro coût d\'API',
-        ig3Sub: 'Utilisation toujours gratuite',
+        ig3Sub: 'Utilisation gratuite',
         ig4Title: 'Filtre intelligent',
         ig4Sub: 'Trouvez les abonnés fantômes'
     }
 };
 
+const FLAGS = {
+    en: '🇬🇧',
+    tr: '🇹🇷',
+    es: '🇪🇸',
+    de: '🇩🇪',
+    fr: '🇫🇷'
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copyBtn');
-    const toast = document.getElementById('toast');
     const codeViewer = document.getElementById('code-viewer');
-    const langBtns = document.querySelectorAll('.lang-btn');
+
+    const dropBtn = document.getElementById('langDropBtn');
+    const dropMenu = document.getElementById('langDropMenu');
+    const dropItems = document.querySelectorAll('.lang-drop-item');
+
     let scriptContent = '';
 
-    // Initialize Language
     let currentLang = localStorage.getItem('prelowers-lang') || (navigator.language.startsWith('tr') ? 'tr' : 'en');
     updateLanguage(currentLang);
 
-    // Fetch the script content
     fetch('./tool.js')
         .then(response => response.text())
         .then(data => {
@@ -103,45 +111,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(window.Prism) Prism.highlightElement(codeViewer);
             }
         })
-        .catch(err => console.log('Fetch error:', err));
+        .catch(err => console.error('Initialization failed.'));
 
     if(copyBtn) {
         copyBtn.addEventListener('click', async () => {
-            if (!scriptContent) return;
+            if (!scriptContent || copyBtn.classList.contains('copied')) return;
             try {
                 await navigator.clipboard.writeText(scriptContent);
-                if(toast) { 
-                    toast.classList.add('show'); 
-                    setTimeout(() => toast.classList.remove('show'), 3000); 
-                }
+                copyBtn.classList.add('copied');
+                const span = copyBtn.querySelector('span');
+                const originalText = span.innerText;
+                span.innerText = I18N[currentLang].copyBtnSuccess;
+
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    span.innerText = I18N[currentLang].copyBtn;
+                }, 2000);
             } catch (err) {}
         });
     }
 
-    if(langBtns) {
-        langBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const lang = e.target.getAttribute('data-lang');
+    if(dropBtn) {
+        dropBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropMenu.classList.toggle('show');
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        if(dropMenu && dropMenu.classList.contains('show') && !e.target.closest('.lang-dropdown')) {
+            dropMenu.classList.remove('show');
+        }
+    });
+
+    if(dropItems) {
+        dropItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const lang = e.currentTarget.getAttribute('data-lang');
                 localStorage.setItem('prelowers-lang', lang);
                 updateLanguage(lang);
+                if(dropMenu) dropMenu.classList.remove('show');
             });
         });
     }
 
     function updateLanguage(lang) {
         const dict = I18N[lang] || I18N['en'];
-        
-        // Update active class on buttons
-        if (langBtns) {
-            langBtns.forEach(btn => {
-                if(btn.getAttribute('data-lang') === lang) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
+
+        if (dropBtn) {
+            dropBtn.innerHTML = `${FLAGS[lang]} ${lang.toUpperCase()} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
         }
 
         Object.keys(dict).forEach(key => {
             const el = document.getElementById('t-' + key);
             if(el) el.innerHTML = dict[key];
         });
+
+        if(copyBtn && !copyBtn.classList.contains('copied')) {
+            const span = copyBtn.querySelector('span');
+            if(span) span.innerText = dict.copyBtn;
+        }
     }
 });
