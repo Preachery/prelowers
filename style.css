@@ -106,14 +106,23 @@ body {
 
 /* Advanced Settings Toggle */
 .btn-advanced {
-    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px;
-    background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 500; font-size: 0.95rem; 
-    cursor: pointer; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+    padding: 14px 28px; border-radius: 30px;
+    background: linear-gradient(180deg, rgba(30,30,30,0.8) 0%, rgba(15,15,15,0.9) 100%);
+    color: var(--text-main); font-weight: 600; font-size: 1rem; 
+    cursor: pointer; border: 1px solid rgba(255,255,255,0.1); 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    margin-top: 30px; margin-bottom: 10px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
-.btn-advanced:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+.btn-advanced:hover { 
+    background: linear-gradient(180deg, rgba(40,40,40,0.8) 0%, rgba(20,20,20,0.9) 100%);
+    border-color: var(--accent-1); 
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+}
 .btn-advanced svg { transition: transform 0.3s ease; }
-.btn-advanced.open svg { transform: rotate(180deg); }
+.btn-advanced.open #advArrow { transform: rotate(180deg); }
 
 /* Advanced Panel Wrapper */
 .advanced-panel {
