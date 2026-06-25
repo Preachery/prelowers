@@ -151,7 +151,10 @@ body {
 }
 
 /* macOS Terminal inside Screen */
-.macos-terminal { width: 100%; height: 100%; display: flex; flex-direction: column; background: rgba(10,10,12,0.95); }
+.macos-terminal {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; background: rgba(10,10,12,0.95);
+}
 .macos-header { background: #1f1f1f; padding: 8px 16px; display: flex; align-items: center; border-bottom: 1px solid #000; }
 .macos-buttons { display: flex; gap: 8px; }
 .macos-buttons span { width: 12px; height: 12px; border-radius: 50%; background: #444; }
