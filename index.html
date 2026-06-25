@@ -1,160 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prelowers — Advanced Instagram Manager</title>
-<meta name="description" content="Take full control of your Instagram followers and following with Prelowers. Fast, secure, and running right in your browser.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prelowers - Advanced Instagram Manager</title>
+    <meta name="description" content="Take full control of your Instagram followers and following with Prelowers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Background Glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track" id="tickerTrack"></div>
-</div>
-
-<!-- NAV -->
-<nav id="mainNav">
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">
-      <svg viewBox="0 0 16 16"><polyline points="2,12 6,7 10,9 14,4"/><circle cx="14" cy="4" r="1.5" fill="white" stroke="none"/></svg>
-    </div>
-    Prelowers
-  </a>
-  <div class="nav-links">
-    <a href="#features" id="nav-features">Features</a>
-    <a href="https://instagram.com/preacherion" target="_blank" style="color:var(--sky)">@preacherion</a>
-  </div>
-  <div class="nav-cta" style="display: flex; align-items: center;">
-    <select id="lang-switcher" class="lang-select">
-      <option value="tr">TR</option>
-      <option value="en">EN</option>
-    </select>
-  </div>
-  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-content silk-reveal-left">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      <span id="t-badge">Now with AI-powered delays</span>
-    </div>
-    <h1 id="t-heroTitle">Master your<br>Instagram<br><span>network</span></h1>
-    <p class="hero-sub" id="t-heroSub">Prelowers is the modern client-side manager built for users that refuse to lose control. Secure unfollowing and ghost removal — all in one script.</p>
-    <div class="hero-btns">
-      <button id="copyBtn" class="btn-hero btn-primary" style="font-family: 'Outfit', sans-serif;">
-        <span id="t-copyBtn">Copy Script</span>
-        <svg viewBox="0 0 16 16"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-      </button>
-      <a href="#features" class="btn-outline" id="t-learnMore">See features</a>
-    </div>
-  </div>
-  <div class="hero-visual silk-reveal-right">
-    <div class="float-badge fb-left">
-      <div class="float-badge-icon" style="background:rgba(168,85,247,.12)">
-        <svg width="18" height="18" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" viewBox="0 0 18 18"><polyline points="2,12 7,7 11,10 16,4"/></svg>
-      </div>
-      <div class="float-badge-info">
-        <div class="val">100%</div>
-        <div class="lbl" id="t-badge1">Client-side</div>
-      </div>
-    </div>
-    <div class="float-badge fb-right">
-      <div class="float-badge-icon" style="background:rgba(96,165,250,.12)">
-        <svg width="18" height="18" fill="none" stroke="var(--sky2)" stroke-width="2" stroke-linecap="round" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><polyline points="9,5 9,9 12,11"/></svg>
-      </div>
-      <div class="float-badge-info">
-        <div class="val" id="t-badge2val">Real-time</div>
-        <div class="lbl" id="t-badge2lbl">API fetching</div>
-      </div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-topbar">
-        <div class="dash-dots">
-          <span style="background:#E85A5A"></span>
-          <span style="background:#F0A030"></span>
-          <span style="background:#3DCC8E"></span>
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="container nav-content">
+            <div class="brand">
+                <div class="logo"></div>
+                <span class="brand-name">Prelowers</span>
+            </div>
+            <div class="nav-actions">
+                <a href="https://instagram.com/preacherion" target="_blank" class="dev-link">@preacherion</a>
+                <select id="lang-switcher" class="lang-select">
+                    <option value="tr">TR</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
         </div>
-        <span class="dash-title-bar" id="t-codeReview">PRELOWERS CODE REVIEW</span>
-        <span style="font-size:10px;color:var(--green);font-weight:500">● Live</span>
-      </div>
-      <div class="dash-body" style="padding:0; overflow:auto; max-height: 400px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;">
-        <pre><code class="language-javascript" id="code-viewer">Loading script...</code></pre>
-      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Hero Text -->
+        <div class="hero-text">
+            <div class="hero-badge" id="t-badge">Client-Side & Secure</div>
+            <h1 class="hero-title" id="t-heroTitle">Master your<br><span class="text-gradient">Instagram</span> network</h1>
+            <p class="hero-subtitle" id="t-heroSub">Prelowers is the ultimate tool to securely unfollow non-followers and remove ghost followers without sharing your password.</p>
+            
+            <div class="hero-actions">
+                <button id="copyBtn" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="t-copyBtn">Copy Script</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Layout with Infographics and Macbook -->
+        <div class="showcase-layout">
+            
+            <!-- Left Infographics -->
+            <div class="infographics-column left">
+                <div class="infographic-card glass-panel float-delay-1">
+                    <div class="ig-icon" style="color: #60a5fa;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="ig-text">
+                        <strong id="t-ig1Title">100% Client-Side</strong>
+                        <p id="t-ig1Sub">No password sharing</p>
+                    </div>
+                </div>
+                <div class="infographic-card glass-panel float-delay-2">
+                    <div class="ig-icon" style="color: #a855f7;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="ig-text">
+                        <strong id="t-ig2Title">Anti-Ban Tech</strong>
+                        <p id="t-ig2Sub">Dynamic delay limits</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Macbook Showcase Area -->
+            <div class="macbook-showcase">
+                <!-- Pure CSS Macbook -->
+                <div class="macbook">
+                    <div class="macbook-screen-bezel">
+                        <div class="macbook-camera"></div>
+                        <div class="macbook-screen">
+                            
+                            <!-- Fullscreen macOS Terminal inside the screen -->
+                            <div class="macos-window">
+                                <div class="macos-header">
+                                    <div class="macos-dots">
+                                        <span class="dot red"></span>
+                                        <span class="dot yellow"></span>
+                                        <span class="dot green"></span>
+                                    </div>
+                                    <div class="macos-title" id="t-codeReview">Code Review — tool.js</div>
+                                </div>
+                                <div class="macos-body">
+                                    <pre><code class="language-javascript" id="code-viewer">Loading script...</code></pre>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="macbook-base">
+                        <div class="macbook-notch"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Infographics -->
+            <div class="infographics-column right">
+                <div class="infographic-card glass-panel float-delay-3">
+                    <div class="ig-icon" style="color: #4ade80;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="ig-text">
+                        <strong id="t-ig3Title">Zero API Cost</strong>
+                        <p id="t-ig3Sub">Free forever to use</p>
+                    </div>
+                </div>
+                <div class="infographic-card glass-panel float-delay-4">
+                    <div class="ig-icon" style="color: #f472b6;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="ig-text">
+                        <strong id="t-ig4Title">Smart Filter</strong>
+                        <p id="t-ig4Sub">Find ghost followers</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast glass-panel">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span id="t-toast">Script copied to clipboard!</span>
     </div>
-  </div>
-</section>
 
-<!-- FEATURES — STICKY STACK -->
-<section class="features-section" id="features">
-  <div class="features-header silk-reveal">
-    <div class="section-tag" id="t-fTag">Platform features</div>
-    <h2 class="section-title" id="t-fTitle">Everything your account needs</h2>
-    <p class="section-sub" id="t-fSub">One script to find non-followers, remove ghost followers, and track your network safely.</p>
-  </div>
-  <div class="sticky-layout">
-    <div class="sticky-cards">
-
-      <div class="sticky-card active" data-panel="0">
-        <div class="sticky-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h3 id="t-f1Title">100% Secure</h3>
-        <p id="t-f1Sub">Runs entirely in your browser. We never ask for or store your password.</p>
-      </div>
-
-      <div class="sticky-card" data-panel="1">
-        <div class="sticky-card-icon">
-          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <h3 id="t-f2Title">Smart Filtering</h3>
-        <p id="t-f2Sub">Easily see who doesn't follow you back, or who you aren't following.</p>
-      </div>
-
-      <div class="sticky-card" data-panel="2">
-        <div class="sticky-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3 id="t-f3Title">Anti-Ban Tech</h3>
-        <p id="t-f3Sub">Built-in dynamic delays and speed controls keep your account safe from rate-limits.</p>
-      </div>
-
-    </div>
-
-    <div class="sticky-panel-wrap">
-      <div class="sticky-panel" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px;">
-        <div class="float-badge-icon" style="background:rgba(168,85,247,.12); width:64px; height:64px; margin-bottom: 24px;">
-          <svg width="32" height="32" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
-        </div>
-        <h3 style="font-size: 24px; margin-bottom:12px;" id="t-pTitle">Ready to use?</h3>
-        <p style="color:var(--text3); font-size:16px; line-height:1.6;" id="t-pSub">Copy the script, open Instagram.com, open Developer Tools (F12), and paste the code into the Console tab.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer style="padding:24px max(48px, calc((100vw - var(--max-w)) / 2));border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-  <div style="font-size:13px;color:var(--text3)">© 2026 Prelowers. Built by @preacherion. Original template by TemplateMo.</div>
-</footer>
-
-<!-- Toast -->
-<div id="toast" class="toast">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-  <span id="t-toast">Script copied to clipboard!</span>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-<script src="main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
