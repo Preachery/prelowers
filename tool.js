@@ -65,9 +65,9 @@
             apiError: "API changes detected or rate limited. Received: ",
             loginError: "Could not find User ID. Please make sure you are logged in.",
             csrfError: "CSRF Token missing.",
-            notifUnfollowed: "✅ @{user} unfollowed!",
-            notifRemoved: "✅ @{user} removed from followers!",
-            notifSkipped: "⚠️ Skipped @{user} (Verified)",
+            notifUnfollowed: "✅ Unfollowed",
+            notifRemoved: "✅ Removed from followers",
+            notifSkipped: "⚠️ Skipped (Verified)",
             downloadReport: "Download Report"
         },
         tr: {
@@ -114,9 +114,9 @@
             apiError: "API erişim limiti veya yapı değişikliği. Gelen veri: ",
             loginError: "Kullanıcı ID bulunamadı. Hesabınıza giriş yaptığınızdan emin olun.",
             csrfError: "CSRF Token eksik.",
-            notifUnfollowed: "✅ @{user} takipten çıkarıldı!",
-            notifRemoved: "✅ @{user} takipçilerden atıldı!",
-            notifSkipped: "⚠️ @{user} (Mavi Tikli) atlandı",
+            notifUnfollowed: "✅ Takipten çıkarıldı",
+            notifRemoved: "✅ Takipçilerden atıldı",
+            notifSkipped: "⚠️ Atlandı (Mavi Tikli)",
             downloadReport: "Raporu İndir"
         }
     };
@@ -347,21 +347,21 @@
             try {
                 if (task.type === 'unfollow') {
                     if (state.settings.protectVerified && user.is_verified) {
-                        showNotification(t("notifSkipped").replace('{user}', user.username), "warning");
+                        showNotification(user, t("notifSkipped"), "warning");
                         continue;
                     }
                     ok = await unfollowUser(task.id, csrf);
                     if (ok) {
                         user.is_followed_by_viewer = false;
                         state.selectedUnfollow.delete(task.id);
-                        showNotification(t("notifUnfollowed").replace('{user}', user.username), "success");
+                        showNotification(user, t("notifUnfollowed"), "success");
                     }
                 } else if (task.type === 'remove_follower') {
                     ok = await removeFollower(task.id, csrf);
                     if (ok) {
                         user.is_following_viewer = false;
                         state.selectedRemove.delete(task.id);
-                        showNotification(t("notifRemoved").replace('{user}', user.username), "success");
+                        showNotification(user, t("notifRemoved"), "success");
                     }
                 }
             } catch (err) {
@@ -797,16 +797,24 @@
         if (!container) {
             container = document.createElement("div");
             container.id = "ig-adv-notif-container";
-            document.body.appendChild(container);
+            document.getElementById("ig-adv-panel").appendChild(container);
         }
     }
 
-    function showNotification(msg, type) {
+    function showNotification(user, msg, type) {
         const container = document.getElementById("ig-adv-notif-container");
         if (!container) return;
         const notif = document.createElement("div");
         notif.className = `ig-adv-notif ig-adv-notif-${type}`;
-        notif.innerHTML = msg;
+        
+        notif.innerHTML = \`
+            <img class="ig-adv-avatar" src="\${user.profile_pic_url}" loading="lazy" onerror="this.style.visibility='hidden'" style="width: 32px; height: 32px; border-radius: 50%;" />
+            <div class="ig-adv-user-info" style="display: flex; flex-direction: column; justify-content: center;">
+                <span style="font-weight: 600; font-size: 13px; color: var(--txt-main);">@\${user.username}</span>
+                <span style="font-size: 11px; color: var(--txt-muted); margin-top: 2px;">\${msg}</span>
+            </div>
+        \`;
+
         container.appendChild(notif);
         
         setTimeout(() => notif.classList.add('show'), 10);
@@ -887,32 +895,35 @@
         }
 
         #ig-adv-notif-container {
-            position: fixed;
+            position: absolute;
             bottom: 20px;
             left: 20px;
+            right: 20px;
             z-index: 9999999;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             pointer-events: none;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         .ig-adv-notif {
-            background: rgba(18, 18, 20, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(30, 30, 34, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 12px;
-            font-size: 14px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transform: translateX(-120%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: translateY(20px);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 300px;
+            transition: all 0.3s ease;
+            max-width: 100%;
         }
         .ig-adv-notif.show {
-            transform: translateX(0);
+            transform: translateY(0);
             opacity: 1;
         }
         .ig-adv-notif-success { border-left: 4px solid #22c55e; }

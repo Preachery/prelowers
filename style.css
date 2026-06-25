@@ -121,17 +121,17 @@ body {
 
 /* Showcase Row */
 .showcase-row {
-    display: flex; align-items: center; justify-content: center; width: 100%; gap: 0; 
+    display: flex; align-items: stretch; justify-content: space-between; width: 100%; max-width: 1540px; margin: 0 auto; gap: 20px;
 }
 
-/* Infographics (Absolute Positioning for Corner Layout) */
+/* Infographics (Flex Layout) */
 .info-column { 
-    position: absolute; top: 12%; height: 72%;
-    display: flex; flex-direction: column; justify-content: space-between; 
-    width: 350px; z-index: 10;
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-evenly; 
+    width: 340px; z-index: 10; padding: 40px 0;
 }
-.info-column:not(.right) { left: 20px; align-items: flex-start; text-align: left; }
-.info-column.right { right: 20px; align-items: flex-end; text-align: right; }
+.info-column:not(.right) { align-items: flex-start; text-align: left; margin-left: 20px; }
+.info-column.right { align-items: flex-end; text-align: right; margin-right: 20px; }
 
 .info-card {
     display: flex; align-items: center; gap: 20px; padding: 22px 28px; border-radius: 20px;

@@ -1,12 +1,18 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Instagram.svg" width="80" alt="Instagram Icon"/>
-  <h1>Prelowers</h1>
-  <p><strong>Master your Instagram network with absolute control.</strong></p>
+  <h1>Prelowers - Advanced Instagram Manager</h1>
+  <p><strong>Take complete control of your Instagram followers and following securely and effortlessly.</strong></p>
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Client-Side](https://img.shields.io/badge/Architecture-100%25%20Client--Side-blueviolet)](#)
   [![Zero-API](https://img.shields.io/badge/Cost-Zero%20API-success)](#)
   [![Developer](https://img.shields.io/badge/Developed%20By-%40preacherion-blue)](https://instagram.com/preacherion)
+</div>
+
+<br>
+
+<div align="center">
+  <img src="images/screenshot.png" alt="Prelowers Web Interface" width="800" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
 </div>
 
 <br>
@@ -17,10 +23,19 @@
 
 Tired of giving your password to shady third-party apps that get your account banned? Prelowers runs **entirely in your browser's Developer Console**. It uses Instagram's own internal APIs to fetch data securely while you are already logged in.
 
-## ✨ Core Features
+## ✨ Mega Update Features (v2)
+
+- 🎛️ **Interactive Script Generator:** Customize the script directly on our website! Set the Language, Action Speed, and Verified Account Protection before even copying the code.
+- 🎨 **Dynamic Theme Engine:** Switch the entire website's design instantly. Choose between Cosmic (Default), Hacker Mode, Dark Elegance, or Hello Kitty (Pastel) to match your vibe.
+- 📱 **Progressive Web App (PWA):** Install Prelowers Web directly to your mobile device or desktop screen for instant access like a native app.
+- 🔔 **In-Script Live Notifications:** While the script is running in Instagram, get beautiful, non-intrusive floating toasts right inside the app panel (complete with User Avatars) to track exactly who is being removed or unfollowed!
+- 📊 **Downloadable HTML Reports:** Once the script finishes running, instantly download an offline HTML report to see exactly what actions were successful or failed.
+- ❓ **FAQ Section:** An interactive accordion FAQ area to answer common security and pricing concerns.
+
+## 🛡️ Core Capabilities
 
 - 🔒 **100% Secure & Client-Side:** Your password never leaves your device. No backend servers, no data collection.
-- 🛡️ **Anti-Ban Technology:** Built-in dynamic delays (`1500ms - 3500ms`) to simulate human behavior and bypass Instagram's rate-limits.
+- 🛑 **Anti-Ban Technology:** Built-in dynamic delays to simulate human behavior and bypass Instagram's rate-limits safely.
 - 👻 **Smart Ghost Detection:** Accurately cross-references your followers and following to instantly find people who don't follow you back.
 - 🌐 **Multi-Language Support:** Fully translated UI in English, Turkish, Spanish, German, and French.
 - ⚡ **Zero API Cost:** Completely free to use forever. No hidden subscriptions.
@@ -31,27 +46,15 @@ Tired of giving your password to shady third-party apps that get your account ba
 
 Using Prelowers is incredibly easy. No installation required.
 
-1. **Visit the Landing Page:** Go to [prelowers-web.vercel.app](https://prelowers-web.vercel.app)
-2. **Copy the Script:** Click the massive **"Copy Script"** button.
-3. **Open Instagram:** Go to [Instagram.com](https://instagram.com) and ensure you are logged in.
-4. **Run the Script:**
+1. **Visit the Web App:** Go to [prelowers-web.vercel.app](https://prelowers-web.vercel.app)
+2. **Configure your Script:** Use the "Script Ayarları" panel to set your language, speed, and safety toggles.
+3. **Copy the Script:** Click the massive **"Kodu Kopyala"** button.
+4. **Open Instagram:** Go to [Instagram.com](https://instagram.com) and ensure you are logged in.
+5. **Run the Script:**
    - Press `F12` (or Right Click -> Inspect) to open Developer Tools.
    - Go to the **Console** tab.
    - Paste the code you copied and press `Enter`.
-5. **Enjoy:** The beautiful Glassmorphism UI will pop up instantly on your screen!
-
----
-
-## 🖥️ The Interface (App GUI)
-
-Prelowers features a stunning, state-of-the-art **Glassmorphism** interface directly injected into Instagram. 
-
-> *[Place your screenshot here]*
-> `<!-- <img src="assets/screenshot.png" width="600"> -->`
-
-- **Dynamic Blur:** Adjust the background blur and opacity to your liking.
-- **Progress Tracking:** Watch in real-time as the script safely scans thousands of users.
-- **Review Screen:** At the end of every operation, see a detailed log of successes and rate-limits.
+6. **Enjoy:** The beautiful Glassmorphism App Panel will pop up instantly on your screen!
 
 ---
 
