@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prelowers - Advanced Instagram Manager</title>
+    <meta name="description" content="Take full control of your Instagram followers and following with Prelowers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar glass-panel">
+        <div class="container nav-content">
+            <div class="brand">
+                <div class="logo"></div>
+                <span class="brand-name">Prelowers</span>
+            </div>
+            <div class="nav-actions">
+                <a href="https://instagram.com/preacherion" target="_blank" class="dev-link">@preacherion</a>
+                <select id="lang-switcher" class="lang-select">
+                    <option value="tr">TR</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container compact-layout">
+        <!-- Info Column -->
+        <div class="info-column">
+            <h1 class="hero-title" id="t-title">Master Your <span class="text-gradient">Instagram</span> Network</h1>
+            <p class="hero-subtitle" id="t-subtitle">The ultimate, client-side manager to securely unfollow non-followers and remove ghost followers without sharing your password.</p>
+            
+            <div class="features-compact glass-panel">
+                <h3 id="t-howItWorks">How it works</h3>
+                <ul class="step-list">
+                    <li><span class="step-num">1</span> <span id="t-step1">Copy the script using the button below.</span></li>
+                    <li><span class="step-num">2</span> <span id="t-step2">Open Instagram in your browser and login.</span></li>
+                    <li><span class="step-num">3</span> <span id="t-step3">Press F12, open the Console tab, paste the code and press Enter.</span></li>
+                </ul>
+            </div>
+
+            <div class="hero-actions">
+                <button id="copyBtn" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="t-copyBtn">Copy Script</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Code Review Column -->
+        <div class="code-column">
+            <div class="mockup-window glass-panel code-window">
+                <div class="mockup-header">
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="header-title" id="t-codeTitle">Code Review (tool.js)</div>
+                </div>
+                <div class="mockup-body">
+                    <pre><code class="language-javascript" id="code-viewer">Loading script...</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast glass-panel">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span id="t-copied">Script copied to clipboard!</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
