@@ -69,6 +69,42 @@
                 <div class="premium-badge" id="t-badge">Client-Side & Secure</div>
                 <h1 class="hero-title" id="t-heroTitle">Master your<br><span class="text-gradient">Instagram</span> network</h1>
                 <p class="hero-subtitle" id="t-heroSub">Prelowers is the ultimate tool to securely unfollow non-followers and remove ghost followers without sharing your password.</p>
+                <div class="script-generator glass-panel">
+                    <h3 id="t-sgTitle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Script Configuration</h3>
+                    
+                    <div class="sg-row">
+                        <label id="t-sgLang">Language</label>
+                        <select id="sgLang" class="sg-select">
+                            <option value="en">English</option>
+                            <option value="tr">Türkçe</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                    
+                    <div class="sg-row">
+                        <label id="t-sgSpeed">Action Speed</label>
+                        <select id="sgSpeed" class="sg-select">
+                            <option value="normal" id="t-sgNormal">Normal (Safe)</option>
+                            <option value="fast" id="t-sgFast">Fast (Risky)</option>
+                            <option value="slow" id="t-sgSlow">Slow (Very Safe)</option>
+                        </select>
+                    </div>
+
+                    <div class="sg-row toggle-row">
+                        <label id="t-sgProtect">Protect Verified Accounts</label>
+                        <label class="switch">
+                            <input type="checkbox" id="sgProtect" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="copyBtn" class="btn-copy" style="margin-bottom: 20px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="t-copyBtn">Copy Script</span>
+                </button>
             </div>
 
             <!-- 3-Column Main Content -->
@@ -92,44 +128,9 @@
                     </div>
                 </div>
 
-                <!-- Center Content: Script Gen + Copy + Macbook -->
+                <!-- Center Content: Macbook -->
                 <div class="center-column">
-                    <div class="script-generator glass-panel">
-                        <h3 id="t-sgTitle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Script Configuration</h3>
-                        
-                        <div class="sg-row">
-                            <label id="t-sgLang">Language</label>
-                            <select id="sgLang" class="sg-select">
-                                <option value="en">English</option>
-                                <option value="tr">Türkçe</option>
-                                <option value="es">Español</option>
-                                <option value="de">Deutsch</option>
-                                <option value="fr">Français</option>
-                            </select>
-                        </div>
-                        
-                        <div class="sg-row">
-                            <label id="t-sgSpeed">Action Speed</label>
-                            <select id="sgSpeed" class="sg-select">
-                                <option value="normal" id="t-sgNormal">Normal (Safe)</option>
-                                <option value="fast" id="t-sgFast">Fast (Risky)</option>
-                                <option value="slow" id="t-sgSlow">Slow (Very Safe)</option>
-                            </select>
-                        </div>
 
-                        <div class="sg-row toggle-row">
-                            <label id="t-sgProtect">Protect Verified Accounts</label>
-                            <label class="switch">
-                                <input type="checkbox" id="sgProtect" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <button id="copyBtn" class="btn-copy">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <span id="t-copyBtn">Copy Script</span>
-                    </button>
 
                     <!-- Macbook Mockup -->
                     <div class="macbook-wrapper">
