@@ -1,0 +1,173 @@
+:root {
+    --bg: #0a0a0f;
+    --bg-panel: rgba(20, 20, 25, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --accent-1: #60a5fa;
+    --accent-2: #a855f7;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-blur: 24px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif; background-color: var(--bg);
+    color: var(--text-main); line-height: 1.6; overflow-x: hidden;
+    min-height: 100vh; display: flex; flex-direction: column;
+}
+
+/* Background Gradients & Glows */
+.bg-glow {
+    position: absolute; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.4;
+    animation: float 10s infinite ease-in-out alternate;
+}
+.bg-glow-1 { top: -10%; left: 10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%); }
+.bg-glow-2 { bottom: -10%; right: 10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--accent-1) 0%, transparent 70%); animation-delay: -5s; }
+
+@keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.glass-panel {
+    background: var(--bg-panel); backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--border); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Navigation */
+.navbar { height: 70px; z-index: 100; border-top: none; border-left: none; border-right: none; border-radius: 0; }
+.nav-content { display: flex; justify-content: space-between; align-items: center; height: 100%; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.logo { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); box-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
+.brand-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+.dev-link { color: var(--accent-2); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+
+.lang-select {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main);
+    padding: 6px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; outline: none;
+}
+
+/* Main Container */
+.main-container {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 60px 24px; flex: 1; position: relative; width: 100%; max-width: 1400px; margin: 0 auto;
+}
+
+/* Hero Text */
+.hero-text { text-align: center; max-width: 700px; margin-bottom: 40px; z-index: 10; }
+.hero-badge {
+    display: inline-block; padding: 6px 16px; border-radius: 50px;
+    background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--accent-2); font-size: 0.85rem; font-weight: 600; margin-bottom: 24px;
+}
+.hero-title { font-size: 4rem; font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
+.hero-subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 32px; padding: 0 20px; }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 40px; border-radius: 12px; font-size: 1.1rem; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; border: none; width: fit-content;
+}
+.btn-primary { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5); }
+
+/* Layout Grid for Infographics & Macbook */
+.showcase-layout {
+    display: flex; justify-content: center; align-items: center; gap: 20px;
+    width: 100%; position: relative;
+}
+
+/* Infographics */
+.infographics-column { display: flex; flex-direction: column; gap: 24px; width: 220px; z-index: 5; }
+.infographics-column.left { align-items: flex-end; text-align: right; }
+.infographics-column.right { align-items: flex-start; text-align: left; }
+
+.infographic-card {
+    display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 16px;
+    width: 260px; transition: transform 0.3s;
+    animation: float-vertical 6s ease-in-out infinite alternate;
+}
+.infographic-card:hover { transform: scale(1.05); }
+
+.infographics-column.left .infographic-card { flex-direction: row-reverse; }
+
+.ig-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05); }
+.ig-text strong { display: block; font-size: 1.05rem; color: var(--text-main); margin-bottom: 4px; }
+.ig-text p { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Float Animation Delays */
+@keyframes float-vertical { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
+.float-delay-1 { animation-delay: 0s; } .float-delay-2 { animation-delay: 1.5s; }
+.float-delay-3 { animation-delay: 0.7s; } .float-delay-4 { animation-delay: 2.2s; }
+
+/* Macbook Showcase */
+.macbook-showcase { flex: 1; max-width: 900px; display: flex; justify-content: center; z-index: 10; perspective: 1500px;}
+.macbook { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
+
+.macbook-screen-bezel {
+    width: 100%; aspect-ratio: 16 / 10; background: #0f1013; border-radius: 4% 4% 0 0 / 6% 6% 0 0;
+    padding: 2.5%; border: 2px solid #2a2a2a; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+}
+.macbook-camera { position: absolute; top: 1.5%; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #333; border-radius: 50%; }
+.macbook-screen { width: 100%; height: 100%; background: #000; border-radius: 4px; overflow: hidden; position: relative; }
+
+.macbook-base {
+    width: 110%; height: 2vw; max-height: 24px; background: #222; border-radius: 0 0 20px 20px;
+    position: relative; border-top: 1px solid #444; box-shadow: inset 0 -2px 6px rgba(0,0,0,0.8), 0 20px 40px rgba(0,0,0,0.5);
+}
+.macbook-notch { width: 15%; height: 40%; background: #111; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border-radius: 0 0 10px 10px; }
+
+/* Fullscreen macOS Terminal inside Screen */
+.macos-window {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    background: rgba(15, 15, 20, 0.95);
+}
+.macos-header {
+    background: rgba(0,0,0,0.6); padding: 8px 16px; display: flex; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.macos-dots { display: flex; gap: 8px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
+.macos-title { flex: 1; text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding-right: 48px; }
+
+.macos-body {
+    flex: 1; padding: 0; overflow: auto; background: transparent;
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.macos-body::-webkit-scrollbar { width: 6px; height: 6px; }
+.macos-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* Prism Overrides */
+pre[class*="language-"] {
+    margin: 0 !important; padding: 20px !important; background: transparent !important;
+    font-size: 0.85rem; font-family: 'JetBrains Mono', monospace !important; line-height: 1.5; text-shadow: none !important;
+}
+
+/* Toast */
+.toast {
+    position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+    padding: 16px 24px; border-radius: 50px; display: flex; align-items: center; gap: 12px;
+    transition: bottom 0.4s; z-index: 1000;
+}
+.toast.show { bottom: 40px; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .showcase-layout { flex-direction: column; }
+    .infographics-column { flex-direction: row; width: 100%; justify-content: center; gap: 16px; margin: 10px 0; }
+    .infographic-card { width: auto; flex: 1; max-width: 300px; padding: 12px 16px; }
+    .infographics-column.left .infographic-card { flex-direction: row; }
+    .hero-title { font-size: 3rem; }
+}
+@media (max-width: 600px) {
+    .infographics-column { flex-direction: column; align-items: center !important; }
+    .infographic-card { width: 100%; max-width: 100%; }
+}
