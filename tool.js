@@ -593,9 +593,8 @@
         root.id = APP_ID;
         document.body.appendChild(root);
         
-        initNotifications();
-
         renderShell(root);
+        initNotifications();
         applyTheme();
     }
 
