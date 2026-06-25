@@ -16,19 +16,18 @@
     <div class="ambient-glow glow-primary"></div>
     <div class="ambient-glow glow-secondary"></div>
 
-    <!-- Sleek Apple-style Navbar -->
-    <nav class="premium-nav">
-        <div class="nav-wrapper">
-            <div class="nav-brand">
-                <div class="nav-logo"></div>
-                <span class="nav-title">Prelowers</span>
-            </div>
-            <div class="nav-controls">
-                <a href="https://instagram.com/preacherion" target="_blank" class="nav-link">@preacherion</a>
+    <!-- Scale Wrapper: This locks the screen to 100vh/vw and handles zooming -->
+    <div id="scale-wrapper">
+        
+        <!-- The Master Canvas: Fixed dimensions (e.g. 1400x800), scaled via JS -->
+        <div id="canvas-workspace">
+            
+            <!-- Floating Controls (Replaces Navbar) -->
+            <div class="floating-controls">
+                <a href="https://instagram.com/preacherion" target="_blank" class="dev-link">@preacherion</a>
                 
-                <!-- Custom Flag Dropdown -->
                 <div class="lang-dropdown">
-                    <button class="lang-drop-btn" id="langDropBtn">
+                    <button class="lang-drop-btn glass-panel" id="langDropBtn">
                         <img src="https://flagcdn.com/w20/tr.png" width="20" alt="TR"> TR <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="lang-drop-menu glass-panel" id="langDropMenu">
@@ -40,90 +39,87 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </nav>
 
-    <!-- Full Viewport Layout Area -->
-    <main class="viewport-layout">
-        
-        <!-- Centered Hero Texts -->
-        <div class="hero-section">
-            <div class="premium-badge" id="t-badge">Client-Side & Secure</div>
-            <h1 class="hero-title" id="t-heroTitle">Master your<br><span class="text-gradient">Instagram</span> network</h1>
-            <p class="hero-subtitle" id="t-heroSub">Prelowers is the ultimate tool to securely unfollow non-followers and remove ghost followers without sharing your password.</p>
-            
-            <button id="copyBtn" class="btn-copy">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                <span id="t-copyBtn">Copy Script</span>
-            </button>
-        </div>
-
-        <!-- Infographics & Macbook Row -->
-        <div class="showcase-row">
-            
-            <!-- Left Info -->
-            <div class="info-column">
-                <div class="info-card">
-                    <div class="info-icon" style="color: #60a5fa;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                    <div class="info-text">
-                        <strong id="t-ig1Title">100% Client-Side</strong>
-                        <p id="t-ig1Sub">No password sharing</p>
-                    </div>
-                </div>
-                <div class="info-card delay-1">
-                    <div class="info-icon" style="color: #a855f7;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                    <div class="info-text">
-                        <strong id="t-ig2Title">Anti-Ban Tech</strong>
-                        <p id="t-ig2Sub">Dynamic delay limits</p>
-                    </div>
-                </div>
+            <!-- Centered Hero Texts -->
+            <div class="hero-section">
+                <div class="premium-badge" id="t-badge">Client-Side & Secure</div>
+                <h1 class="hero-title" id="t-heroTitle">Master your<br><span class="text-gradient">Instagram</span> network</h1>
+                <p class="hero-subtitle" id="t-heroSub">Prelowers is the ultimate tool to securely unfollow non-followers and remove ghost followers without sharing your password.</p>
+                
+                <button id="copyBtn" class="btn-copy">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="t-copyBtn">Copy Script</span>
+                </button>
             </div>
 
-            <!-- Macbook Mockup -->
-            <div class="macbook-wrapper">
-                <div class="macbook">
-                    <div class="macbook-lid">
-                        <div class="macbook-camera"></div>
-                        <div class="macbook-screen">
-                            <div class="macos-terminal">
-                                <div class="macos-header">
-                                    <div class="macos-buttons">
-                                        <span></span><span></span><span></span>
+            <!-- Infographics & Macbook Row -->
+            <div class="showcase-row">
+                
+                <!-- Left Info -->
+                <div class="info-column">
+                    <div class="info-card">
+                        <div class="info-icon" style="color: #60a5fa;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <div class="info-text">
+                            <strong id="t-ig1Title">100% Client-Side</strong>
+                            <p id="t-ig1Sub">No password sharing</p>
+                        </div>
+                    </div>
+                    <div class="info-card delay-1">
+                        <div class="info-icon" style="color: #a855f7;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                        <div class="info-text">
+                            <strong id="t-ig2Title">Anti-Ban Tech</strong>
+                            <p id="t-ig2Sub">Dynamic delay limits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Macbook Mockup -->
+                <div class="macbook-wrapper">
+                    <div class="macbook">
+                        <div class="macbook-lid">
+                            <div class="macbook-camera"></div>
+                            <div class="macbook-screen">
+                                <div class="macos-terminal">
+                                    <div class="macos-header">
+                                        <div class="macos-buttons">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                        <div class="macos-title" id="t-codeReview">Code Review — tool.js</div>
                                     </div>
-                                    <div class="macos-title" id="t-codeReview">Code Review — tool.js</div>
-                                </div>
-                                <div class="macos-content">
-                                    <pre><code class="language-javascript" id="code-viewer">Loading script...</code></pre>
+                                    <div class="macos-content">
+                                        <pre><code class="language-javascript" id="code-viewer">Loading script...</code></pre>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="macbook-bottom">
-                        <div class="macbook-notch"></div>
+                        <div class="macbook-bottom">
+                            <div class="macbook-notch"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Info -->
-            <div class="info-column right">
-                <div class="info-card delay-2">
-                    <div class="info-icon" style="color: #4ade80;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-                    <div class="info-text">
-                        <strong id="t-ig3Title">Zero API Cost</strong>
-                        <p id="t-ig3Sub">Free forever to use</p>
+                <!-- Right Info -->
+                <div class="info-column right">
+                    <div class="info-card delay-2">
+                        <div class="info-icon" style="color: #4ade80;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                        <div class="info-text">
+                            <strong id="t-ig3Title">Zero API Cost</strong>
+                            <p id="t-ig3Sub">Free forever to use</p>
+                        </div>
+                    </div>
+                    <div class="info-card delay-3">
+                        <div class="info-icon" style="color: #f472b6;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                        <div class="info-text">
+                            <strong id="t-ig4Title">Smart Filter</strong>
+                            <p id="t-ig4Sub">Find ghost followers</p>
+                        </div>
                     </div>
                 </div>
-                <div class="info-card delay-3">
-                    <div class="info-icon" style="color: #f472b6;"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                    <div class="info-text">
-                        <strong id="t-ig4Title">Smart Filter</strong>
-                        <p id="t-ig4Sub">Find ghost followers</p>
-                    </div>
-                </div>
-            </div>
 
+            </div>
+            
         </div>
-    </main>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>

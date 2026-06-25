@@ -172,4 +172,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if(span) span.innerText = dict.copyBtn;
         }
     }
+
+    // --- CANVAS SCALING ENGINE ---
+    function scaleCanvas() {
+        const wrapper = document.getElementById('scale-wrapper');
+        const canvas = document.getElementById('canvas-workspace');
+        if (!wrapper || !canvas) return;
+        
+        // The master canvas is built for 1400x850
+        const CANVAS_W = 1400;
+        const CANVAS_H = 850;
+        
+        // Calculate the scale needed to fit the viewport
+        const scaleX = window.innerWidth / CANVAS_W;
+        const scaleY = window.innerHeight / CANVAS_H;
+        
+        // Use the smaller scale to ensure it fits completely without scrolling
+        // Multiply by 0.95 to add a tiny bit of breathing room
+        const scale = Math.min(scaleX, scaleY) * 0.95;
+        
+        canvas.style.transform = `scale(${scale})`;
+    }
+
+    // Listen for resize and trigger initially
+    window.addEventListener('resize', scaleCanvas);
+    scaleCanvas();
+
 });
