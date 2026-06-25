@@ -377,13 +377,13 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
 
 /* 
 ==============================================
-   MOBILE RESPONSIVENESS (Scroll Layout)
+   MOBILE RESPONSIVENESS (Dedicated Mobile GUI)
 ==============================================
 */
 @media (max-width: 900px) {
     body { overflow-y: auto; overflow-x: hidden; }
     
-    #scale-wrapper { height: auto; min-height: 100vh; overflow: visible; padding: 80px 20px 40px; }
+    #scale-wrapper { height: auto; min-height: 100vh; overflow: visible; padding: 100px 20px 40px; }
     
     #canvas-workspace {
         position: relative; top: auto; left: auto; margin: 0; width: 100%; height: auto;
@@ -392,15 +392,38 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
     
     .floating-controls { top: 20px; right: 20px; }
     
-    .hero-title { font-size: 2.5rem; }
-    .hero-subtitle { font-size: 1rem; padding: 0 10px; }
+    .hero-title { font-size: 2.2rem; }
+    .hero-subtitle { font-size: 0.95rem; padding: 0 10px; margin-bottom: 20px; }
     
-    .showcase-row { flex-direction: column; gap: 40px; }
+    /* Dedicated Mobile Layout: Hide Macbook, Stack Everything */
+    .macbook-wrapper { display: none !important; }
     
-    .info-column, .info-column.right { align-items: center; width: 100%; text-align: center; }
-    .info-column:not(.right) .info-card { flex-direction: row; }
-    .info-card { width: 100%; max-width: 320px; justify-content: flex-start; }
+    .main-3col-layout { 
+        flex-direction: column; 
+        gap: 20px; 
+        justify-content: center; 
+        margin-bottom: 20px;
+    }
     
-    .macbook-wrapper { width: 100%; max-width: 500px; }
-    .macbook-lid { aspect-ratio: 4/3; } /* Taller for mobile readability */
+    .center-column { 
+        order: -1; /* Move center column (Advanced button) to the top */
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .btn-advanced { width: 100%; max-width: 400px; margin: 0 auto 10px auto; }
+    .advanced-panel { width: 100%; max-width: 400px; margin: 0 auto; }
+    .script-generator { margin: 10px 0; }
+    
+    .info-column { width: 100%; align-items: center; text-align: center; gap: 15px; padding: 10px 0; }
+    .info-card { width: 100%; max-width: 400px; justify-content: flex-start; text-align: left; }
+    
+    .faq-section { width: 100%; max-width: 400px; margin: 20px auto; }
+    
+    .telemetry-widget {
+        position: relative;
+        bottom: auto; left: auto;
+        margin: 40px auto 0 auto;
+        width: 100%; max-width: 400px;
+    }
 }

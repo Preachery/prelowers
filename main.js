@@ -43,7 +43,12 @@ const I18N = {
         faq4Q: 'Does this work on mobile phones?',
         faq4A: 'No, the script requires the developer console which is only available on desktop browsers (Chrome, Edge, Safari, Firefox). You must run it from a computer.',
         faq5Q: 'What happens if the process is interrupted?',
-        faq5A: 'If you close the tab or your internet disconnects, the script will simply stop. Since it runs entirely in your browser, no partial data is saved. You can just restart the script anytime.'
+        faq5A: 'If you close the tab or your internet disconnects, the script will simply stop. Since it runs entirely in your browser, no partial data is saved. You can just restart the script anytime.',
+        sgNote: 'Note: You can also change these settings on-the-fly inside the application after running the script.',
+        faq6Q: 'How do I use this script? (Step by Step)',
+        faq6A: '1. Click "Copy Script" above.<br>2. Open instagram.com on your computer and log in.<br>3. Press F12 (or right-click -> Inspect) to open Developer Tools.<br>4. Click on the "Console" tab.<br>5. Paste the code and press Enter.',
+        faq7Q: 'My account is private, will it work?',
+        faq7A: 'Yes, absolutely! Since the script runs directly in your own browser using your active session, it works perfectly on private accounts without needing any external API access.'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -89,7 +94,12 @@ const I18N = {
         faq4Q: 'Telefonda çalışır mı?',
         faq4A: 'Hayır, script yalnızca bilgisayar tarayıcılarında (Chrome, Edge, Safari vb.) bulunan geliştirici konsolu üzerinden çalışır.',
         faq5Q: 'İşlem yarıda kesilirse ne olur?',
-        faq5A: 'Eğer sekmeyi kapatırsanız veya internetiniz koparsa script sadece durur. Herhangi bir veri yarım kaydedilmez, istediğiniz zaman scripti tekrar çalıştırabilirsiniz.'
+        faq5A: 'Eğer sekmeyi kapatırsanız veya internetiniz koparsa script sadece durur. Herhangi bir veri yarım kaydedilmez, istediğiniz zaman scripti tekrar çalıştırabilirsiniz.',
+        sgNote: 'Not: Bu ayarları scripti çalıştırdıktan sonra uygulama içerisinden de anlık olarak değiştirebilirsiniz.',
+        faq6Q: 'Nasıl kullanılır? (Adım Adım Kurulum)',
+        faq6A: '1. Yukarıdaki "Kodu Kopyala" butonuna tıklayın.<br>2. Bilgisayarınızdan instagram.com\'a girin.<br>3. F12 tuşuna basarak (veya sağ tık -> İncele) Geliştirici Araçlarını açın.<br>4. "Console" sekmesine geçin.<br>5. Kodu yapıştırın ve Enter tuşuna basın.',
+        faq7Q: 'Hesabım gizli, çalışır mı?',
+        faq7A: 'Kesinlikle evet! Script dışarıdan bir API yerine doğrudan sizin aktif oturumunuzu ve tarayıcınızı kullandığı için gizli hesaplarda bile %100 sorunsuz çalışır.'
     },
     es: {
         badge: 'En el cliente y Seguro',
