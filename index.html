@@ -19,6 +19,18 @@
     <!-- Scale Wrapper: This locks the screen to 100vh/vw and handles zooming -->
     <div id="scale-wrapper">
         
+        <!-- Telemetry Widget -->
+        <div class="telemetry-widget glass-panel">
+            <div class="tel-row">
+                <div class="live-indicator"></div>
+                <span id="t-liveUsers">Live</span>: <strong id="liveCount">--</strong>
+            </div>
+            <div class="tel-row">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span id="t-totalUses">Total Visits</span>: <strong id="totalCount">--</strong>
+            </div>
+        </div>
+
         <!-- The Master Canvas: Fixed dimensions (e.g. 1400x800), scaled via JS -->
         <div id="canvas-workspace">
             

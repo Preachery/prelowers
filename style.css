@@ -65,6 +65,18 @@ body {
 .dev-link { color: var(--text-muted); text-decoration: none; font-size: 1rem; transition: color 0.2s; font-weight: 500; }
 .dev-link:hover { color: var(--text-main); }
 
+/* Telemetry Widget */
+.telemetry-widget {
+    position: absolute; bottom: 24px; left: 24px;
+    padding: 12px 18px; border-radius: 12px;
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 1000; font-family: 'Inter', sans-serif; font-size: 0.85rem;
+}
+.tel-row { display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
+.tel-row strong { color: var(--text-main); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+.live-indicator { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
 /* Dropdown */
 .lang-dropdown { position: relative; }
 .lang-drop-btn {
