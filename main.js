@@ -121,11 +121,43 @@ const I18N = {
         ig4Title: 'Filtro Inteligente',
         ig4Sub: 'Encuentra seguidores fantasma',
         popupTitle: '¡Código Copiado! ✔️',
-        popupDesc: 'Mira el tutorial de 10 segundos a continuación, luego abre Instagram para ejecutar el script.',
+        popupDesc: 'Sigue los pasos a continuación, luego abre Instagram para ejecutar el script.',
         popupIg: 'Abrir Instagram',
         popupClose: 'Cerrar',
         totalVisits: 'Visitas Totales',
-        totalCopies: 'Copias de Script'
+        totalCopies: 'Copias de Script',
+        faqTitle: 'Preguntas Frecuentes',
+        faq1Q: '¿Es seguro? ¿Me pueden banear?',
+        faq1A: 'Absolutamente seguro. Usamos retrasos dinámicos que simulan comportamiento humano. Nunca pedimos tu contraseña.',
+        faq2Q: '¿Cómo encuentra seguidores fantasma?',
+        faq2A: 'El script compara tu lista de "Siguiendo" con tu lista de "Seguidores" usando la memoria local de tu navegador.',
+        faq3Q: '¿Necesito pagar una suscripción?',
+        faq3A: '¡No! Prelowers es 100% gratuito para siempre.',
+        faq4Q: '¿Funciona en teléfonos móviles?',
+        faq4A: 'No, el script requiere la consola de desarrollador que solo está disponible en navegadores de escritorio.',
+        faq5Q: '¿Qué pasa si el proceso se interrumpe?',
+        faq5A: 'Si cierras la pestaña o se desconecta internet, el script simplemente se detendrá. Puedes reiniciar en cualquier momento.',
+        faq6Q: '¿Cómo uso este script? (Paso a Paso)',
+        faq6A: '1. Haz clic en "Copiar Script".<br>2. Abre instagram.com en tu computadora.<br>3. Presiona F12 para abrir Herramientas de Desarrollador.<br>4. Ve a la pestaña "Console".<br>5. Pega el código y presiona Enter.',
+        faq7Q: '¿Mi cuenta es privada, funcionará?',
+        faq7A: '¡Sí! El script se ejecuta en tu propio navegador usando tu sesión activa, así que funciona perfectamente en cuentas privadas.',
+        sgTitle: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Configuración del Script',
+        sgLang: 'Idioma',
+        sgSpeed: 'Velocidad',
+        sgNormal: 'Normal (Seguro)',
+        sgFast: 'Rápido (Riesgo)',
+        sgSlow: 'Lento (Muy Seguro)',
+        sgProtect: 'Proteger Cuentas Verificadas',
+        advToggle: 'Configuración Avanzada',
+        sgTheme: 'Tema del Script',
+        sgDark: 'Oscuro (Predeterminado)',
+        sgLight: 'Claro',
+        sgKitty: 'Hello Kitty (Rosa)',
+        sgVfx: 'Habilitar Efectos Visuales (Glassmorphism)',
+        sgNote: 'Nota: También puedes cambiar estos ajustes en tiempo real dentro de la aplicación.',
+        installApp: 'Instalar App',
+        sgGhosts: 'Buscar Seguidores Fantasma (Escanea últimas 3 publicaciones)',
+        tutorialSteps: '1. Abre instagram.com → 2. Presiona F12 → 3. Pega el código → Enter'
     },
     de: {
         badge: 'Client-Side & Sicher',
@@ -143,11 +175,43 @@ const I18N = {
         ig4Title: 'Smart Filter',
         ig4Sub: 'Finde Geister-Follower',
         popupTitle: 'Code Kopiert! ✔️',
-        popupDesc: 'Sieh dir das kurze 10-Sekunden-Tutorial an und öffne dann Instagram, um das Skript auszuführen.',
+        popupDesc: 'Folge den Schritten unten und öffne dann Instagram, um das Skript auszuführen.',
         popupIg: 'Instagram öffnen',
         popupClose: 'Schließen',
         totalVisits: 'Gesamtbesuche',
-        totalCopies: 'Skript Kopien'
+        totalCopies: 'Skript Kopien',
+        faqTitle: 'Häufig gestellte Fragen',
+        faq1Q: 'Ist das sicher? Werde ich gesperrt?',
+        faq1A: 'Absolut sicher. Wir verwenden dynamische, menschenähnliche Verzögerungen. Dein Passwort wird nie abgefragt.',
+        faq2Q: 'Wie findet es Geister-Follower?',
+        faq2A: 'Das Skript vergleicht deine "Folge ich"-Liste mit deiner "Follower"-Liste im lokalen Browserspeicher.',
+        faq3Q: 'Muss ich ein Abo bezahlen?',
+        faq3A: 'Nein! Prelowers ist 100% kostenlos – für immer.',
+        faq4Q: 'Funktioniert das auf dem Handy?',
+        faq4A: 'Nein, das Skript benötigt die Entwicklerkonsole, die nur in Desktop-Browsern verfügbar ist.',
+        faq5Q: 'Was passiert bei Unterbrechung?',
+        faq5A: 'Wenn du den Tab schließt oder die Verbindung verlierst, stoppt das Skript einfach. Du kannst es jederzeit neu starten.',
+        faq6Q: 'Wie benutze ich das Skript? (Schritt für Schritt)',
+        faq6A: '1. Klicke auf "Skript kopieren".<br>2. Öffne instagram.com auf deinem Computer.<br>3. Drücke F12 für die Entwicklertools.<br>4. Gehe zum Tab "Console".<br>5. Füge den Code ein und drücke Enter.',
+        faq7Q: 'Mein Konto ist privat, funktioniert es?',
+        faq7A: 'Ja! Das Skript läuft direkt in deinem Browser mit deiner aktiven Sitzung, also funktioniert es auch bei privaten Konten.',
+        sgTitle: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Skript-Konfiguration',
+        sgLang: 'Sprache',
+        sgSpeed: 'Geschwindigkeit',
+        sgNormal: 'Normal (Sicher)',
+        sgFast: 'Schnell (Risiko)',
+        sgSlow: 'Langsam (Sehr Sicher)',
+        sgProtect: 'Verifizierte Konten schützen',
+        advToggle: 'Erweiterte Einstellungen',
+        sgTheme: 'Skript-Thema',
+        sgDark: 'Dunkel (Standard)',
+        sgLight: 'Hell',
+        sgKitty: 'Hello Kitty (Rosa)',
+        sgVfx: 'Visuelle Effekte aktivieren (Glassmorphism)',
+        sgNote: 'Hinweis: Diese Einstellungen können auch in der App geändert werden.',
+        installApp: 'App installieren',
+        sgGhosts: 'Geister-Follower finden (Scannt letzte 3 Beiträge)',
+        tutorialSteps: '1. Öffne instagram.com → 2. Drücke F12 → 3. Code einfügen → Enter'
     },
     fr: {
         badge: 'Côté client & Sécurisé',
@@ -165,11 +229,43 @@ const I18N = {
         ig4Title: 'Filtre intelligent',
         ig4Sub: 'Trouvez les abonnés fantômes',
         popupTitle: 'Code Copié! ✔️',
-        popupDesc: 'Regardez le tutoriel de 10 secondes ci-dessous, puis ouvrez Instagram pour exécuter le script.',
+        popupDesc: 'Suivez les étapes ci-dessous, puis ouvrez Instagram pour exécuter le script.',
         popupIg: 'Ouvrir Instagram',
         popupClose: 'Fermer',
         totalVisits: 'Visites Totales',
-        totalCopies: 'Copies du Script'
+        totalCopies: 'Copies du Script',
+        faqTitle: 'Questions Fréquentes',
+        faq1Q: 'Est-ce sûr ? Serai-je banni ?',
+        faq1A: 'Absolument sûr. Nous utilisons des délais dynamiques qui simulent un comportement humain. Votre mot de passe n\'est jamais demandé.',
+        faq2Q: 'Comment trouve-t-il les abonnés fantômes ?',
+        faq2A: 'Le script compare votre liste "Abonnements" avec votre liste "Abonnés" en utilisant la mémoire locale de votre navigateur.',
+        faq3Q: 'Dois-je payer un abonnement ?',
+        faq3A: 'Non ! Prelowers est 100% gratuit pour toujours.',
+        faq4Q: 'Est-ce que ça fonctionne sur mobile ?',
+        faq4A: 'Non, le script nécessite la console développeur disponible uniquement sur les navigateurs de bureau.',
+        faq5Q: 'Que se passe-t-il si le processus est interrompu ?',
+        faq5A: 'Si vous fermez l\'onglet ou perdez la connexion, le script s\'arrête simplement. Vous pouvez le relancer à tout moment.',
+        faq6Q: 'Comment utiliser ce script ? (Étape par étape)',
+        faq6A: '1. Cliquez sur "Copier le script".<br>2. Ouvrez instagram.com sur votre ordinateur.<br>3. Appuyez sur F12 pour les outils de développement.<br>4. Allez dans l\'onglet "Console".<br>5. Collez le code et appuyez sur Entrée.',
+        faq7Q: 'Mon compte est privé, est-ce que ça fonctionnera ?',
+        faq7A: 'Oui ! Le script s\'exécute directement dans votre navigateur avec votre session active, il fonctionne parfaitement sur les comptes privés.',
+        sgTitle: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Configuration du Script',
+        sgLang: 'Langue',
+        sgSpeed: 'Vitesse',
+        sgNormal: 'Normal (Sûr)',
+        sgFast: 'Rapide (Risqué)',
+        sgSlow: 'Lent (Très Sûr)',
+        sgProtect: 'Protéger les comptes vérifiés',
+        advToggle: 'Paramètres Avancés',
+        sgTheme: 'Thème du Script',
+        sgDark: 'Sombre (Par défaut)',
+        sgLight: 'Clair',
+        sgKitty: 'Hello Kitty (Rose)',
+        sgVfx: 'Activer les effets visuels (Glassmorphism)',
+        sgNote: 'Note: Vous pouvez aussi modifier ces paramètres dans l\'application.',
+        installApp: 'Installer l\'app',
+        sgGhosts: 'Trouver les abonnés fantômes (Scanne les 3 derniers posts)',
+        tutorialSteps: '1. Ouvrez instagram.com → 2. Appuyez sur F12 → 3. Collez le code → Entrée'
     }
 };
 
@@ -256,9 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(copyBtn) {
         copyBtn.addEventListener('click', async () => {
             try {
-                const scriptUrl = 'tool.js';
-                const res = await fetch(scriptUrl);
-                let scriptContent = await res.text();
+                // Use cached scriptContent instead of re-fetching
+                let finalScript = scriptContent;
                 
                 // --- INJECT PRE-SETTINGS ---
                 const pLang = document.getElementById('sgLang').value || 'en';
@@ -280,9 +375,9 @@ window.PRELOWERS_INJECTED_SETTINGS = {
 };
 // -----------------------------------
 `;
-                scriptContent = preSettings + "\n" + scriptContent;
+                finalScript = preSettings + "\n" + finalScript;
                 
-                await navigator.clipboard.writeText(scriptContent);
+                await navigator.clipboard.writeText(finalScript);
                 copyBtn.classList.add('copied');
                 const span = copyBtn.querySelector('span');
                 span.innerText = I18N[currentLang].copyBtnSuccess;
@@ -290,7 +385,6 @@ window.PRELOWERS_INJECTED_SETTINGS = {
                 // Show the tutorial modal
                 if(tutorialModal) {
                     tutorialModal.classList.add('show');
-                    if(tutorialVideo) tutorialVideo.play().catch(e => console.log("Video auto-play prevented"));
                 }
                 
                 // Increment Real Copies API
@@ -315,7 +409,6 @@ window.PRELOWERS_INJECTED_SETTINGS = {
     if(btnModalClose) {
         btnModalClose.addEventListener('click', () => {
             tutorialModal.classList.remove('show');
-            if(tutorialVideo) tutorialVideo.pause();
         });
     }
     
@@ -324,7 +417,6 @@ window.PRELOWERS_INJECTED_SETTINGS = {
             // Open Instagram and close modal
             window.open('https://www.instagram.com/', '_blank');
             tutorialModal.classList.remove('show');
-            if(tutorialVideo) tutorialVideo.pause();
         });
     }
 
@@ -431,16 +523,21 @@ window.PRELOWERS_INJECTED_SETTINGS = {
 
     function updateLanguage(lang) {
         const dict = I18N[lang] || I18N['en'];
+        const fallback = I18N['en'];
+        
+        // Update html lang attribute
+        document.documentElement.setAttribute('lang', lang);
         
         // Update Dropdown Button UI
         if (dropBtn) {
             dropBtn.innerHTML = `${FLAGS[lang]} ${lang.toUpperCase()} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
         }
 
-        // Apply translations
-        Object.keys(dict).forEach(key => {
+        // Apply translations with fallback to English
+        const allKeys = new Set([...Object.keys(fallback), ...Object.keys(dict)]);
+        allKeys.forEach(key => {
             const el = document.getElementById('t-' + key);
-            if(el) el.innerHTML = dict[key];
+            if(el) el.innerHTML = dict[key] || fallback[key];
         });
         
         // If button is currently NOT in copied state, update its text
@@ -475,7 +572,11 @@ window.PRELOWERS_INJECTED_SETTINGS = {
         canvas.style.transform = `scale(${scale})`;
     }
 
-    window.addEventListener('resize', scaleCanvas);
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(scaleCanvas, 100);
+    });
     scaleCanvas();
     // --- TELEMETRY WIDGET LOGIC ---
     const visitCountEl = document.getElementById('visitCount');

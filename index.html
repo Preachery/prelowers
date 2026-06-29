@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prelowers - Advanced Instagram Manager</title>
-    <meta name="description" content="Take full control of your Instagram followers and following with Prelowers.">
+    <title>Prelowers - Advanced Instagram Follower Manager</title>
+    <meta name="description" content="Take full control of your Instagram followers and following with Prelowers. Securely unfollow non-followers and detect ghost followers — no password needed.">
+    <link rel="canonical" href="https://prelowers-web.vercel.app/">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Prelowers — Instagram Follower Manager">
+    <meta property="og:description" content="Securely unfollow non-followers and detect ghost followers. 100% client-side, no password needed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://prelowers-web.vercel.app/">
+    <meta property="og:image" content="https://prelowers-web.vercel.app/images/screenshot.png">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Prelowers — Instagram Follower Manager">
+    <meta name="twitter:description" content="Securely unfollow non-followers and detect ghost followers.">
+    <meta name="twitter:image" content="https://prelowers-web.vercel.app/images/screenshot.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/screenshot.png">
     <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,9 +28,9 @@
 </head>
 <body>
     <!-- Premium Ambient Background -->
-    <div class="ambient-glow glow-primary"></div>
-    <div class="ambient-glow glow-secondary"></div>
-    <div class="ambient-glow glow-center"></div>
+    <div class="ambient-glow glow-primary" aria-hidden="true"></div>
+    <div class="ambient-glow glow-secondary" aria-hidden="true"></div>
+    <div class="ambient-glow glow-center" aria-hidden="true"></div>
 
     <!-- Scale Wrapper: This locks the screen to 100vh/vw and handles zooming -->
     <div id="scale-wrapper">
@@ -38,7 +52,7 @@
             
             <!-- Floating Controls (Top Right) -->
             <div class="floating-controls">
-                <a href="https://instagram.com/preacherion" target="_blank" class="dev-link">@preacherion</a>
+                <a href="https://instagram.com/preacherion" target="_blank" rel="noopener noreferrer" class="dev-link">@preacherion</a>
                 
                 <button id="btnInstall" class="lang-drop-btn" style="display: none; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.5); color: #fff;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
@@ -59,14 +73,14 @@
 
                 <div class="lang-dropdown">
                     <button class="lang-drop-btn glass-panel" id="langDropBtn">
-                        <img src="https://flagcdn.com/w20/tr.png" width="20" alt="TR"> TR <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <img src="https://flagcdn.com/w20/tr.png" width="20" alt="TR" loading="lazy"> TR <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="lang-drop-menu glass-panel" id="langDropMenu">
-                        <button class="lang-drop-item" data-lang="en"><img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN" style="vertical-align: middle; margin-right: 6px;"> English</button>
-                        <button class="lang-drop-item" data-lang="tr"><img src="https://flagcdn.com/w20/tr.png" width="16" alt="TR" style="vertical-align: middle; margin-right: 6px;"> Türkçe</button>
-                        <button class="lang-drop-item" data-lang="es"><img src="https://flagcdn.com/w20/es.png" width="16" alt="ES" style="vertical-align: middle; margin-right: 6px;"> Español</button>
-                        <button class="lang-drop-item" data-lang="de"><img src="https://flagcdn.com/w20/de.png" width="16" alt="DE" style="vertical-align: middle; margin-right: 6px;"> Deutsch</button>
-                        <button class="lang-drop-item" data-lang="fr"><img src="https://flagcdn.com/w20/fr.png" width="16" alt="FR" style="vertical-align: middle; margin-right: 6px;"> Français</button>
+                        <button class="lang-drop-item" data-lang="en"><img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN" style="vertical-align: middle; margin-right: 6px;" loading="lazy"> English</button>
+                        <button class="lang-drop-item" data-lang="tr"><img src="https://flagcdn.com/w20/tr.png" width="16" alt="TR" style="vertical-align: middle; margin-right: 6px;" loading="lazy"> Türkçe</button>
+                        <button class="lang-drop-item" data-lang="es"><img src="https://flagcdn.com/w20/es.png" width="16" alt="ES" style="vertical-align: middle; margin-right: 6px;" loading="lazy"> Español</button>
+                        <button class="lang-drop-item" data-lang="de"><img src="https://flagcdn.com/w20/de.png" width="16" alt="DE" style="vertical-align: middle; margin-right: 6px;" loading="lazy"> Deutsch</button>
+                        <button class="lang-drop-item" data-lang="fr"><img src="https://flagcdn.com/w20/fr.png" width="16" alt="FR" style="vertical-align: middle; margin-right: 6px;" loading="lazy"> Français</button>
                     </div>
                 </div>
             </div>
@@ -118,7 +132,7 @@
                                     <div class="macos-terminal">
                                         <div class="macos-header">
                                             <div class="macos-buttons">
-                                                <span></span><span></span><span></span>
+                                                <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
                                             </div>
                                             <div class="macos-title" id="t-codeReview">Code Review — tool.js</div>
                                         </div>
@@ -295,7 +309,10 @@
             <p id="t-popupDesc">Follow the quick tutorial below, then open Instagram to run the script.</p>
             
             <div class="video-placeholder">
-                <video src="images/tutorial.mp4" controls muted playsinline class="tutorial-video" id="tutorialVideo"></video>
+                <div class="video-fallback">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <span id="t-tutorialSteps">1. Open instagram.com → 2. Press F12 → 3. Paste code → Enter</span>
+                </div>
             </div>
             
             <div class="tutorial-actions">
@@ -311,8 +328,8 @@
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

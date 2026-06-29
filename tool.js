@@ -68,7 +68,18 @@
             notifUnfollowed: "✅ Unfollowed",
             notifRemoved: "✅ Removed from followers",
             notifSkipped: "⚠️ Skipped (Verified)",
-            downloadReport: "Download Report"
+            downloadReport: "Download Report",
+            scanGhosts: "Scanning ghosts...",
+            scanPost: "Scanning post",
+            scanFailed: "Scan failed",
+            colUser: "User",
+            tipAll: "Select both actions",
+            tipUnf: "Unfollow them",
+            tipRem: "Remove from your followers",
+            ghost: "Ghost",
+            protectVerifiedLabel: "Protect Verified",
+            findGhostsLabel: "Find Ghost Followers",
+            loadMore: "Load More"
         },
         tr: {
             title: "Prelowers",
@@ -117,7 +128,18 @@
             notifUnfollowed: "✅ Takipten çıkarıldı",
             notifRemoved: "✅ Takipçilerden atıldı",
             notifSkipped: "⚠️ Atlandı (Mavi Tikli)",
-            downloadReport: "Raporu İndir"
+            downloadReport: "Raporu İndir",
+            scanGhosts: "Hayalet analizi yapılıyor...",
+            scanPost: "Gönderi taranıyor",
+            scanFailed: "Tarama başarısız",
+            colUser: "Kullanıcı",
+            tipAll: "Her iki işlemi seç",
+            tipUnf: "Takipten çık",
+            tipRem: "Takipçilerden çıkar",
+            ghost: "Hayalet",
+            protectVerifiedLabel: "Onaylı Hesapları Koru",
+            findGhostsLabel: "Hayalet Takipçileri Bul",
+            loadMore: "Daha Fazla Yükle"
         },
         es: {
             title: "Prelowers",
@@ -166,7 +188,18 @@
             notifUnfollowed: "✅ Dejado de seguir",
             notifRemoved: "✅ Eliminado",
             notifSkipped: "⚠️ Omitido",
-            downloadReport: "Descargar Reporte"
+            downloadReport: "Descargar Reporte",
+            scanGhosts: "Escaneando fantasmas...",
+            scanPost: "Escaneando publicación",
+            scanFailed: "Escaneo fallido",
+            colUser: "Usuario",
+            tipAll: "Seleccionar ambas acciones",
+            tipUnf: "Dejar de seguir",
+            tipRem: "Eliminar de tus seguidores",
+            ghost: "Fantasma",
+            protectVerifiedLabel: "Proteger Verificados",
+            findGhostsLabel: "Buscar Seguidores Fantasma",
+            loadMore: "Cargar Más"
         },
         de: {
             title: "Prelowers",
@@ -215,7 +248,18 @@
             notifUnfollowed: "✅ Entfolgt",
             notifRemoved: "✅ Entfernt",
             notifSkipped: "⚠️ Übersprungen",
-            downloadReport: "Bericht"
+            downloadReport: "Bericht",
+            scanGhosts: "Geister werden gescannt...",
+            scanPost: "Beitrag wird gescannt",
+            scanFailed: "Scan fehlgeschlagen",
+            colUser: "Benutzer",
+            tipAll: "Beide Aktionen auswählen",
+            tipUnf: "Entfolgen",
+            tipRem: "Aus Followern entfernen",
+            ghost: "Geist",
+            protectVerifiedLabel: "Verifizierte schützen",
+            findGhostsLabel: "Geister-Follower finden",
+            loadMore: "Mehr laden"
         },
         fr: {
             title: "Prelowers",
@@ -264,7 +308,18 @@
             notifUnfollowed: "✅ Désabonné",
             notifRemoved: "✅ Supprimé",
             notifSkipped: "⚠️ Ignoré",
-            downloadReport: "Rapport"
+            downloadReport: "Rapport",
+            scanGhosts: "Analyse des fantômes...",
+            scanPost: "Analyse de la publication",
+            scanFailed: "Échec de l'analyse",
+            colUser: "Utilisateur",
+            tipAll: "Sélectionner les deux actions",
+            tipUnf: "Se désabonner",
+            tipRem: "Supprimer de vos abonnés",
+            ghost: "Fantôme",
+            protectVerifiedLabel: "Protéger les vérifiés",
+            findGhostsLabel: "Trouver les abonnés fantômes",
+            loadMore: "Charger plus"
         }
     };
 
@@ -304,7 +359,7 @@
         scanCancelled: false,
         execCancelled: false,
         searchQuery: "",
-        panelPos: null,
+        displayLimit: 100,
         settings: loadSettings()
     };
 
@@ -356,11 +411,25 @@
     async function igFetch(url, init = {}) {
         let attempt = 0;
         while (attempt < 3) {
-            const response = await fetch(url, {
-                credentials: "include",
-                headers: { ...IG_HEADERS, ...(init.headers || {}) },
-                ...init
-            });
+            let response;
+            try {
+                response = await fetch(url, {
+                    credentials: "include",
+                    headers: { ...IG_HEADERS, ...(init.headers || {}) },
+                    ...init
+                });
+            } catch (networkErr) {
+                await sleep(5000);
+                try {
+                    response = await fetch(url, {
+                        credentials: "include",
+                        headers: { ...IG_HEADERS, ...(init.headers || {}) },
+                        ...init
+                    });
+                } catch (retryErr) {
+                    throw new Error("Network error: " + retryErr.message);
+                }
+            }
             if (response.ok) return response.json();
             if (response.status === 429) {
                 await sleep(5000 * Math.pow(2, attempt)); // Backoff
@@ -436,6 +505,10 @@
         state.usersMap.clear();
         state.selectedUnfollow.clear();
         state.selectedRemove.clear();
+        state.searchQuery = '';
+        state.progress.lastUser = '';
+        state.logs = [];
+        state.displayLimit = 100;
         state.mode = "scanning";
 
         try {
@@ -465,14 +538,14 @@
                 renderBody();
             }
         } catch (err) {
-            alert("Scan failed: " + err.message);
+            alert(t('scanFailed') + ': ' + err.message);
             state.mode = "idle";
             renderBody();
         }
     }
 
     async function scanGhosts(viewerId) {
-        state.progress.label = "Scanning recent posts for Ghost analysis...";
+        state.progress.label = t('scanGhosts');
         renderBody();
         try {
             const feedUrl = `/api/v1/feed/user/${viewerId}/?count=3`;
@@ -483,7 +556,7 @@
             for (let i = 0; i < Math.min(items.length, 3); i++) {
                 if (state.scanCancelled) break;
                 const mediaId = items[i].id;
-                state.progress.label = `Scanning engagement on post ${i + 1}...`;
+                state.progress.label = t('scanPost') + ' ' + (i + 1) + '...';
                 renderBody();
                 
                 try {
@@ -528,6 +601,7 @@
             if (state.execCancelled) break;
 
             const user = state.usersMap.get(task.id);
+            if (!user) continue;
             const actionText = task.type === 'unfollow' ? t("unfollow") : t("remove");
             state.progress.label = `Processing @${user.username} (${actionText})...`;
             renderBody();
@@ -701,12 +775,17 @@
         const query = state.searchQuery.toLowerCase();
         let displayUsers = Array.from(state.usersMap.values()).filter(u => {
             return u.username.toLowerCase().includes(query) || u.full_name.toLowerCase().includes(query);
-        });
+        });
         displayUsers.sort((a, b) => {
             if (a.is_followed_by_viewer && !a.is_following_viewer && !(b.is_followed_by_viewer && !b.is_following_viewer)) return -1;
             if (!(a.is_followed_by_viewer && !a.is_following_viewer) && b.is_followed_by_viewer && !b.is_following_viewer) return 1;
             return a.username.localeCompare(b.username);
         });
+
+        const totalFiltered = displayUsers.length;
+        const limit = state.displayLimit || 100;
+        const visibleUsers = displayUsers.slice(0, limit);
+        const hasMore = totalFiltered > limit;
 
         const totalUnfollow = state.selectedUnfollow.size;
         const totalRemove = state.selectedRemove.size;
@@ -717,22 +796,22 @@
             </div>
 
             <div class="ig-adv-list-header">
-                <div style="flex:1">User</div>
+                <div style="flex:1">${t("colUser")}</div>
                 <div class="ig-adv-cols">
-                    <div class="col-title" title="Select both actions">${t("colAll")}</div>
-                    <div class="col-title" title="Unfollow them">${t("colUnf")}</div>
-                    <div class="col-title" title="Remove from your followers">${t("colRem")}</div>
+                    <div class="col-title" title="${t('tipAll')}">${t("colAll")}</div>
+                    <div class="col-title" title="${t('tipUnf')}">${t("colUnf")}</div>
+                    <div class="col-title" title="${t('tipRem')}">${t("colRem")}</div>
                 </div>
             </div>
 
             <div class="ig-adv-list">
-                ${displayUsers.length === 0 ? `<div class="ig-adv-center" style="padding: 20px; color: var(--txt-muted);">${t("noUsers")}</div>` : ''}
-                ${displayUsers.map(u => {
+                ${visibleUsers.length === 0 ? `<div class="ig-adv-center" style="padding: 20px; color: var(--txt-muted);">${t("noUsers")}</div>` : ''}
+                ${visibleUsers.map(u => {
                     const canUnfollow = u.is_followed_by_viewer;
                     const canRemove = u.is_following_viewer;
 
                     const isUnfChecked = state.selectedUnfollow.has(u.id);
-                    const isRemChecked = state.selectedRemove.has(u.id);
+                    const isRemChecked = state.selectedRemove.has(u.id);
                     let masterChecked = false;
                     if (canUnfollow && canRemove) masterChecked = isUnfChecked && isRemChecked;
                     else if (canUnfollow) masterChecked = isUnfChecked;
@@ -746,7 +825,7 @@
                             <div class="ig-adv-tags">
                                 ${u.is_followed_by_viewer ? `<span class="ig-adv-tag blue">${t("youFollow")}</span>` : `<span class="ig-adv-tag gray">${t("notFollowing")}</span>`}
                                 ${u.is_following_viewer ? `<span class="ig-adv-tag green">${t("followsYou")}</span>` : `<span class="ig-adv-tag red">${t("notFollower")}</span>`}
-                                ${u.is_ghost ? `<span class="ig-adv-tag danger" style="background: rgba(239,68,68,0.2); color: #ef4444;">Ghost</span>` : ''}
+                                ${u.is_ghost ? `<span class="ig-adv-tag danger" style="background: rgba(239,68,68,0.2); color: #ef4444;">${t('ghost')}</span>` : ''}
                             </div>
                         </div>
                         <div class="ig-adv-cols">
@@ -757,6 +836,7 @@
                     </div>
                     `;
                 }).join('')}
+                ${hasMore ? `<div style="text-align: center; padding: 12px;"><button class="ig-adv-btn ghost" id="btn-load-more">${t('loadMore')}</button></div>` : ''}
             </div>
 
             <div class="ig-adv-footer" style="justify-content: space-between; gap: 10px;">
@@ -832,6 +912,9 @@
                     <select id="set-lang" class="ig-adv-input">
                         <option value="tr" ${state.settings.lang === 'tr' ? 'selected' : ''}>Türkçe</option>
                         <option value="en" ${state.settings.lang === 'en' ? 'selected' : ''}>English</option>
+                        <option value="es" ${state.settings.lang === 'es' ? 'selected' : ''}>Español</option>
+                        <option value="de" ${state.settings.lang === 'de' ? 'selected' : ''}>Deutsch</option>
+                        <option value="fr" ${state.settings.lang === 'fr' ? 'selected' : ''}>Français</option>
                     </select>
                 </div>
 
@@ -854,10 +937,24 @@
                     </select>
                 </div>
 
+                <div class="ig-adv-setting-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="set-ghosts" ${state.settings.findGhosts ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--accent);" />
+                        ${t('findGhostsLabel')}
+                    </label>
+                </div>
+
+                <div class="ig-adv-setting-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="set-protect" ${state.settings.protectVerified ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--accent);" />
+                        ${t('protectVerifiedLabel')}
+                    </label>
+                </div>
+
                 <button class="ig-adv-btn primary" id="btn-save-settings" style="width: 100%; margin-top: 20px;">${t("saveSettings")}</button>
             </div>
         `;
-    }
+    }
     function bindEvents() {
         document.getElementById("btn-start-scan")?.addEventListener("click", startScan);
         document.getElementById("btn-cancel-scan")?.addEventListener("click", () => { state.scanCancelled = true; });
@@ -868,21 +965,27 @@
             renderBody();
         });
         document.getElementById("btn-dl-report")?.addEventListener("click", generateHTMLReport);
+        document.getElementById("btn-load-more")?.addEventListener("click", () => {
+            state.displayLimit = (state.displayLimit || 100) + 100;
+            renderBody();
+        });
         const saveBtn = document.getElementById("btn-save-settings");
         if (saveBtn) {
             document.getElementById("set-blur")?.addEventListener("input", (e) => {
                 document.getElementById("val-blur").textContent = e.target.value;
-                state.settings.blur = e.target.value;
+                state.settings.blur = parseInt(e.target.value);
                 applyTheme();
             });
             document.getElementById("set-opacity")?.addEventListener("input", (e) => {
                 document.getElementById("val-opacity").textContent = e.target.value;
-                state.settings.opacity = e.target.value;
+                state.settings.opacity = parseInt(e.target.value);
                 applyTheme();
             });
             saveBtn.addEventListener("click", () => {
                 state.settings.lang = document.getElementById("set-lang").value;
                 state.settings.speed = document.getElementById("set-speed").value;
+                state.settings.findGhosts = document.getElementById('set-ghosts')?.checked || false;
+                state.settings.protectVerified = document.getElementById('set-protect')?.checked || false;
                 saveSettings();
                 state.mode = state.prevMode || "idle";
                 renderBody();
@@ -891,9 +994,12 @@
 
         const searchInput = document.getElementById("ig-adv-search");
         if (searchInput) {
+            let searchDebounceTimer = null;
             searchInput.addEventListener("input", (e) => {
                 state.searchQuery = e.target.value;
-                renderBody();
+                state.displayLimit = 100;
+                if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+                searchDebounceTimer = setTimeout(() => renderBody(), 250);
             });
             searchInput.focus();
             const val = searchInput.value;
@@ -1187,10 +1293,7 @@
         .ig-adv-notif-error { border-left: 4px solid #ef4444; }
         .ig-adv-notif-warning { border-left: 4px solid #eab308; }
 
-        @keyframes ig-slide-in {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+
 
         .ig-adv-header {
             padding: 16px 20px;
