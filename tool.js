@@ -79,7 +79,15 @@
             ghost: "Ghost",
             protectVerifiedLabel: "Protect Verified",
             findGhostsLabel: "Find Ghost Followers",
-            loadMore: "Load More"
+            loadMore: "Load More",
+            tabAll: "All",
+            tabNonFollowers: "Non-Followers",
+            tabGhosts: "Ghosts",
+            tabMutual: "Mutual",
+            tabFans: "Fans",
+            statsScanned: "Scanned",
+            eta: "ETA: ",
+            secs: "s"
         },
         tr: {
             title: "Prelowers",
@@ -139,7 +147,15 @@
             ghost: "Hayalet",
             protectVerifiedLabel: "Onaylı Hesapları Koru",
             findGhostsLabel: "Hayalet Takipçileri Bul",
-            loadMore: "Daha Fazla Yükle"
+            loadMore: "Daha Fazla Yükle",
+            tabAll: "Tümü",
+            tabNonFollowers: "Takip Etmeyenler",
+            tabGhosts: "Hayaletler",
+            tabMutual: "Karşılıklı",
+            tabFans: "Hayranlar",
+            statsScanned: "Taranan",
+            eta: "Kalan Süre: ",
+            secs: "sn"
         },
         es: {
             title: "Prelowers",
@@ -199,7 +215,15 @@
             ghost: "Fantasma",
             protectVerifiedLabel: "Proteger Verificados",
             findGhostsLabel: "Buscar Seguidores Fantasma",
-            loadMore: "Cargar Más"
+            loadMore: "Cargar Más",
+            tabAll: "Todos",
+            tabNonFollowers: "No Seguidores",
+            tabGhosts: "Fantasmas",
+            tabMutual: "Mutuo",
+            tabFans: "Fans",
+            statsScanned: "Escaneado",
+            eta: "Tiempo rest: ",
+            secs: "s"
         },
         de: {
             title: "Prelowers",
@@ -259,7 +283,15 @@
             ghost: "Geist",
             protectVerifiedLabel: "Verifizierte schützen",
             findGhostsLabel: "Geister-Follower finden",
-            loadMore: "Mehr laden"
+            loadMore: "Mehr laden",
+            tabAll: "Alle",
+            tabNonFollowers: "Nicht-Follower",
+            tabGhosts: "Geister",
+            tabMutual: "Gegenseitig",
+            tabFans: "Fans",
+            statsScanned: "Gescannt",
+            eta: "Verbleibend: ",
+            secs: "s"
         },
         fr: {
             title: "Prelowers",
@@ -319,7 +351,15 @@
             ghost: "Fantôme",
             protectVerifiedLabel: "Protéger les vérifiés",
             findGhostsLabel: "Trouver les abonnés fantômes",
-            loadMore: "Charger plus"
+            loadMore: "Charger plus",
+            tabAll: "Tous",
+            tabNonFollowers: "Non-abonnés",
+            tabGhosts: "Fantômes",
+            tabMutual: "Mutuel",
+            tabFans: "Fans",
+            statsScanned: "Analysé",
+            eta: "Temps rest: ",
+            secs: "s"
         }
     };
 
@@ -353,12 +393,15 @@
         progress: {
             label: "",
             current: 0,
-            total: 0
+            total: 0,
+            eta: 0,
+            startTime: null
         },
         logs: [],
         scanCancelled: false,
         execCancelled: false,
         searchQuery: "",
+        filterTab: "all",
         displayLimit: 100,
         settings: loadSettings()
     };
@@ -488,9 +531,16 @@
             }
 
             state.progress.current = state.usersMap.size;
-            state.progress.total = 0; // REST API does not provide a total count
             if (json.users && json.users.length > 0) {
                 state.progress.lastUser = json.users[json.users.length - 1].username;
+            }
+            if (state.progress.total > 0 && state.progress.startTime) {
+                const elapsed = (Date.now() - state.progress.startTime) / 1000;
+                const rate = state.progress.current / elapsed;
+                if (rate > 0) {
+                    const remaining = Math.max(0, state.progress.total - state.progress.current);
+                    state.progress.eta = Math.round(remaining / rate);
+                }
             }
             renderBody(); // Update UI
 
@@ -516,6 +566,15 @@
             if (!viewerId) throw new Error(t("loginError"));
 
             state.progress.label = t("scanningFollowing");
+            try {
+                const userInfo = await igFetch(`/api/v1/users/${viewerId}/info/`);
+                if (userInfo && userInfo.user) {
+                    state.progress.total = userInfo.user.following_count + userInfo.user.follower_count;
+                }
+            } catch (e) {
+                state.progress.total = 0;
+            }
+            state.progress.startTime = Date.now();
             renderBody();
             await fetchConnection(viewerId, 'following');
 
@@ -758,13 +817,14 @@
     function viewScanning() {
         const percent = state.progress.total ? Math.round((state.progress.current / state.progress.total) * 100) : 0;
         const lastUserHtml = state.progress.lastUser ? `<p style="font-size: 11px; color: var(--accent); margin-top: 8px;">@${state.progress.lastUser}...</p>` : '';
+        const etaHtml = state.progress.eta > 0 ? `<span style="margin-left: 10px; color: var(--accent);">${t("eta")}${state.progress.eta}${t("secs")}</span>` : '';
         return `
             <div class="ig-adv-center" style="padding-top: 40px;">
                 <h3 style="margin-bottom: 8px; font-size: 14px; text-align: center;">${state.progress.label}</h3>
                 <div class="ig-adv-progress-bar">
                     <div class="ig-adv-progress-fill" style="width: ${state.progress.total ? percent : 100}%; ${!state.progress.total ? 'animation: ig-pulse 1.5s infinite;' : ''}"></div>
                 </div>
-                <p style="color: var(--txt-muted); margin-top: 12px;">${t("found")}${state.progress.current}</p>
+                <p style="color: var(--txt-muted); margin-top: 12px;">${t("found")}${state.progress.current} / ${state.progress.total || '?'} ${etaHtml}</p>
                 ${lastUserHtml}
                 <button class="ig-adv-btn ghost" id="btn-cancel-scan" style="margin-top: 24px;">${t("cancel")}</button>
             </div>
@@ -772,10 +832,23 @@
     }
 
     function viewResults() {
+        let totalUsers = state.usersMap.size;
+        let ghosts = 0;
+        let notFollowingBack = 0;
+        Array.from(state.usersMap.values()).forEach(u => {
+            if(u.is_ghost) ghosts++;
+            if(u.is_followed_by_viewer && !u.is_following_viewer) notFollowingBack++;
+        });
+
         const query = state.searchQuery.toLowerCase();
         let displayUsers = Array.from(state.usersMap.values()).filter(u => {
+            if (state.filterTab === 'nonfollowers' && !(u.is_followed_by_viewer && !u.is_following_viewer)) return false;
+            if (state.filterTab === 'ghosts' && !u.is_ghost) return false;
+            if (state.filterTab === 'mutual' && !(u.is_followed_by_viewer && u.is_following_viewer)) return false;
+            if (state.filterTab === 'fans' && !(u.is_following_viewer && !u.is_followed_by_viewer)) return false;
             return u.username.toLowerCase().includes(query) || u.full_name.toLowerCase().includes(query);
         });
+
         displayUsers.sort((a, b) => {
             if (a.is_followed_by_viewer && !a.is_following_viewer && !(b.is_followed_by_viewer && !b.is_following_viewer)) return -1;
             if (!(a.is_followed_by_viewer && !a.is_following_viewer) && b.is_followed_by_viewer && !b.is_following_viewer) return 1;
@@ -791,6 +864,29 @@
         const totalRemove = state.selectedRemove.size;
 
         return `
+            <div class="ig-adv-dashboard" style="display: flex; gap: 8px; padding: 12px 16px; background: rgba(0,0,0,0.15); border-bottom: 1px solid var(--border-color);">
+                <div style="flex:1; text-align:center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <div style="font-size: 11px; color: var(--txt-muted);">${t("statsScanned")}</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff;">${totalUsers}</div>
+                </div>
+                <div style="flex:1; text-align:center; padding: 8px; background: rgba(239,68,68,0.1); border-radius: 8px;">
+                    <div style="font-size: 11px; color: #f87171;">${t("tabGhosts")}</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #ef4444;">${ghosts}</div>
+                </div>
+                <div style="flex:1; text-align:center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <div style="font-size: 11px; color: var(--txt-muted);">${t("tabNonFollowers")}</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff;">${notFollowingBack}</div>
+                </div>
+            </div>
+
+            <div class="ig-adv-tabs" style="display: flex; gap: 4px; padding: 8px 16px; border-bottom: 1px solid var(--border-color); overflow-x: auto; scrollbar-width: none;">
+                <button class="ig-adv-tab ${state.filterTab === 'all' ? 'active' : ''}" data-tab="all">${t('tabAll')}</button>
+                <button class="ig-adv-tab ${state.filterTab === 'nonfollowers' ? 'active' : ''}" data-tab="nonfollowers">${t('tabNonFollowers')}</button>
+                <button class="ig-adv-tab ${state.filterTab === 'ghosts' ? 'active' : ''}" data-tab="ghosts">${t('tabGhosts')}</button>
+                <button class="ig-adv-tab ${state.filterTab === 'mutual' ? 'active' : ''}" data-tab="mutual">${t('tabMutual')}</button>
+                <button class="ig-adv-tab ${state.filterTab === 'fans' ? 'active' : ''}" data-tab="fans">${t('tabFans')}</button>
+            </div>
+
             <div class="ig-adv-results-header">
                 <input type="text" class="ig-adv-search" id="ig-adv-search" placeholder="${t("search")}" value="${state.searchQuery}" />
             </div>
@@ -798,9 +894,15 @@
             <div class="ig-adv-list-header">
                 <div style="flex:1">${t("colUser")}</div>
                 <div class="ig-adv-cols">
-                    <div class="col-title" title="${t('tipAll')}">${t("colAll")}</div>
-                    <div class="col-title" title="${t('tipUnf')}">${t("colUnf")}</div>
-                    <div class="col-title" title="${t('tipRem')}">${t("colRem")}</div>
+                    <div class="col-title" title="${t('tipAll')}">
+                        <input type="checkbox" id="cb-header-all" style="width: 14px; height: 14px; accent-color: var(--accent);" />
+                    </div>
+                    <div class="col-title" title="${t('tipUnf')}">
+                        <input type="checkbox" id="cb-header-unf" style="width: 14px; height: 14px; accent-color: var(--accent);" />
+                    </div>
+                    <div class="col-title" title="${t('tipRem')}">
+                        <input type="checkbox" id="cb-header-rem" style="width: 14px; height: 14px; accent-color: var(--accent);" />
+                    </div>
                 </div>
             </div>
 
@@ -1006,6 +1108,40 @@
             searchInput.value = '';
             searchInput.value = val;
         }
+
+        document.querySelectorAll(".ig-adv-tab").forEach(tab => {
+            tab.addEventListener("click", (e) => {
+                state.filterTab = e.target.getAttribute("data-tab");
+                state.displayLimit = 100;
+                renderBody();
+            });
+        });
+
+        const listHeader = document.querySelector(".ig-adv-list-header");
+        if (listHeader) {
+            listHeader.addEventListener("change", (e) => {
+                const target = e.target;
+                if (target.tagName !== "INPUT" || target.type !== "checkbox") return;
+                
+                const isChecked = target.checked;
+                const rows = document.querySelectorAll(".ig-adv-list .ig-adv-row");
+                
+                rows.forEach(row => {
+                    const cbMaster = row.querySelector(".cb-master");
+                    const cbUnf = row.querySelector(".cb-unfollow");
+                    const cbRem = row.querySelector(".cb-remove");
+                    
+                    if (target.id === "cb-header-all") {
+                        if (cbMaster && !cbMaster.disabled) { cbMaster.checked = isChecked; cbMaster.dispatchEvent(new Event('change', {bubbles:true})); }
+                    } else if (target.id === "cb-header-unf") {
+                        if (cbUnf && !cbUnf.disabled) { cbUnf.checked = isChecked; cbUnf.dispatchEvent(new Event('change', {bubbles:true})); }
+                    } else if (target.id === "cb-header-rem") {
+                        if (cbRem && !cbRem.disabled) { cbRem.checked = isChecked; cbRem.dispatchEvent(new Event('change', {bubbles:true})); }
+                    }
+                });
+            });
+        }
+
         const list = document.querySelector(".ig-adv-list");
         if (list) {
             list.addEventListener("change", (e) => {
@@ -1403,6 +1539,21 @@
             transition: border-color 0.2s;
         }
         .ig-adv-search:focus { border-color: var(--accent); }
+
+        .ig-adv-tab {
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.02);
+            color: var(--txt-muted);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .ig-adv-tab:hover { background: rgba(255,255,255,0.1); color: var(--txt-main); }
+        .ig-adv-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         .ig-adv-list-header {
             display: flex; padding: 8px 16px; font-size: 11px;
