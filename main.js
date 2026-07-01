@@ -15,7 +15,7 @@ const I18N = {
         ig4Title: 'Smart Filter',
         ig4Sub: 'Find ghost followers',
         popupTitle: 'Code Copied! ✔️',
-        popupDesc: 'Watch the quick 10-second tutorial below, then open Instagram to run the script.',
+        popupDesc: 'Follow the quick steps below, then open Instagram to run the script.',
         popupIg: 'Open Instagram',
         popupClose: 'Close',
         totalVisits: 'Total Visits',
@@ -50,7 +50,24 @@ const I18N = {
         faq7Q: 'My account is private, will it work?',
         faq7A: 'Yes, absolutely! Since the script runs directly in your own browser using your active session, it works perfectly on private accounts without needing any external API access.',
         installApp: 'Install App',
-        sgGhosts: 'Find Ghost Followers (Scans engagement on last 3 posts, slow)'
+        sgGhosts: 'Find Ghost Followers (Scans engagement on last 3 posts, slow)',
+        step1Title: 'Copy Script',
+        step1Desc: 'Click the button above to copy the script to your clipboard',
+        step2Title: 'Open Console',
+        step2Desc: 'Press F12 on Instagram.com and go to Console tab',
+        step3Title: 'Run & Manage',
+        step3Desc: 'Paste the code, press Enter and manage your followers',
+        statUsers: 'Active Users',
+        statActions: 'Actions Performed',
+        statLangs: 'Languages',
+        statCost: 'Forever Free',
+        footerDesc: 'Advanced Instagram Follower Manager',
+        footerDev: 'Developer: @preacherion',
+        footerRights: 'All rights reserved.',
+        tutStep1: 'Open <strong>instagram.com</strong>',
+        tutStep2: 'Press <strong>F12</strong> or <strong>Ctrl+Shift+I</strong>',
+        tutStep3: 'Click the <strong>Console</strong> tab',
+        tutStep4: 'Paste code & press <strong>Enter</strong>'
     },
     tr: {
         badge: 'Tamamen Tarayıcıda',
@@ -68,7 +85,7 @@ const I18N = {
         ig4Title: 'Akıllı Filtreleme',
         ig4Sub: 'Sahte takipçileri bulun',
         popupTitle: 'Kod Kopyalandı! ✔️',
-        popupDesc: 'Kodu nasıl kullanacağınızı görmek için aşağıdaki 10 saniyelik videoyu izleyin, ardından Instagram\'ı açın.',
+        popupDesc: 'Aşağıdaki adımları takip edin, ardından Instagram\'ı açın.',
         popupIg: 'Instagram\'ı Aç',
         popupClose: 'Kapat',
         totalVisits: 'Toplam Ziyaret',
@@ -103,7 +120,24 @@ const I18N = {
         faq7Q: 'Hesabım gizli, çalışır mı?',
         faq7A: 'Kesinlikle evet! Script dışarıdan bir API yerine doğrudan sizin aktif oturumunuzu ve tarayıcınızı kullandığı için gizli hesaplarda bile %100 sorunsuz çalışır.',
         installApp: 'Uygulamayı Yükle',
-        sgGhosts: 'Hayalet Takipçileri Bul (Son 3 gönderiyi tarar, yavaş)'
+        sgGhosts: 'Hayalet Takipçileri Bul (Son 3 gönderiyi tarar, yavaş)',
+        step1Title: 'Kodu Kopyala',
+        step1Desc: 'Yukarıdaki butona tıklayarak scripti kopyalayın',
+        step2Title: 'Konsolu Aç',
+        step2Desc: 'Instagram.com\'da F12 tuşuna basın ve Console sekmesine gidin',
+        step3Title: 'Çalıştır & Yönet',
+        step3Desc: 'Kodu yapıştırın, Enter\'a basın ve takipçilerinizi yönetin',
+        statUsers: 'Aktif Kullanıcı',
+        statActions: 'Gerçekleştirilen İşlem',
+        statLangs: 'Dil Desteği',
+        statCost: 'Sonsuza Kadar Ücretsiz',
+        footerDesc: 'Gelişmiş Instagram Takipçi Yöneticisi',
+        footerDev: 'Geliştirici: @preacherion',
+        footerRights: 'Tüm hakları saklıdır.',
+        tutStep1: '<strong>instagram.com</strong> adresini açın',
+        tutStep2: '<strong>F12</strong> veya <strong>Ctrl+Shift+I</strong> tuşuna basın',
+        tutStep3: '<strong>Console</strong> sekmesine tıklayın',
+        tutStep4: 'Kodu yapıştırın & <strong>Enter</strong> tuşuna basın'
     },
     es: {
         badge: 'En el cliente y Seguro',
@@ -157,7 +191,24 @@ const I18N = {
         sgNote: 'Nota: También puedes cambiar estos ajustes en tiempo real dentro de la aplicación.',
         installApp: 'Instalar App',
         sgGhosts: 'Buscar Seguidores Fantasma (Escanea últimas 3 publicaciones)',
-        tutorialSteps: '1. Abre instagram.com → 2. Presiona F12 → 3. Pega el código → Enter'
+        tutorialSteps: '1. Abre instagram.com → 2. Presiona F12 → 3. Pega el código → Enter',
+        step1Title: 'Copiar Script',
+        step1Desc: 'Haz clic en el botón para copiar el script',
+        step2Title: 'Abrir Consola',
+        step2Desc: 'Presiona F12 en Instagram.com y ve a Console',
+        step3Title: 'Ejecutar',
+        step3Desc: 'Pega el código, presiona Enter y gestiona tus seguidores',
+        statUsers: 'Usuarios Activos',
+        statActions: 'Acciones Realizadas',
+        statLangs: 'Idiomas',
+        statCost: 'Gratis Para Siempre',
+        footerDesc: 'Gestor Avanzado de Seguidores de Instagram',
+        footerDev: 'Desarrollador: @preacherion',
+        footerRights: 'Todos los derechos reservados.',
+        tutStep1: 'Abre <strong>instagram.com</strong>',
+        tutStep2: 'Presiona <strong>F12</strong> o <strong>Ctrl+Shift+I</strong>',
+        tutStep3: 'Haz clic en la pestaña <strong>Console</strong>',
+        tutStep4: 'Pega el código y presiona <strong>Enter</strong>'
     },
     de: {
         badge: 'Client-Side & Sicher',
@@ -211,7 +262,24 @@ const I18N = {
         sgNote: 'Hinweis: Diese Einstellungen können auch in der App geändert werden.',
         installApp: 'App installieren',
         sgGhosts: 'Geister-Follower finden (Scannt letzte 3 Beiträge)',
-        tutorialSteps: '1. Öffne instagram.com → 2. Drücke F12 → 3. Code einfügen → Enter'
+        tutorialSteps: '1. Öffne instagram.com → 2. Drücke F12 → 3. Code einfügen → Enter',
+        step1Title: 'Skript kopieren',
+        step1Desc: 'Klicke auf den Button, um das Skript zu kopieren',
+        step2Title: 'Konsole öffnen',
+        step2Desc: 'Drücke F12 auf Instagram.com und gehe zum Console-Tab',
+        step3Title: 'Ausführen',
+        step3Desc: 'Code einfügen, Enter drücken und Follower verwalten',
+        statUsers: 'Aktive Nutzer',
+        statActions: 'Durchgeführte Aktionen',
+        statLangs: 'Sprachen',
+        statCost: 'Für Immer Kostenlos',
+        footerDesc: 'Erweiterter Instagram Follower-Manager',
+        footerDev: 'Entwickler: @preacherion',
+        footerRights: 'Alle Rechte vorbehalten.',
+        tutStep1: 'Öffne <strong>instagram.com</strong>',
+        tutStep2: 'Drücke <strong>F12</strong> oder <strong>Ctrl+Shift+I</strong>',
+        tutStep3: 'Klicke auf den <strong>Console</strong>-Tab',
+        tutStep4: 'Code einfügen & <strong>Enter</strong> drücken'
     },
     fr: {
         badge: 'Côté client & Sécurisé',
@@ -265,7 +333,24 @@ const I18N = {
         sgNote: 'Note: Vous pouvez aussi modifier ces paramètres dans l\'application.',
         installApp: 'Installer l\'app',
         sgGhosts: 'Trouver les abonnés fantômes (Scanne les 3 derniers posts)',
-        tutorialSteps: '1. Ouvrez instagram.com → 2. Appuyez sur F12 → 3. Collez le code → Entrée'
+        tutorialSteps: '1. Ouvrez instagram.com → 2. Appuyez sur F12 → 3. Collez le code → Entrée',
+        step1Title: 'Copier le script',
+        step1Desc: 'Cliquez sur le bouton pour copier le script',
+        step2Title: 'Ouvrir la console',
+        step2Desc: 'Appuyez sur F12 sur Instagram.com et allez dans Console',
+        step3Title: 'Exécuter',
+        step3Desc: 'Collez le code, appuyez sur Entrée et gérez vos abonnés',
+        statUsers: 'Utilisateurs Actifs',
+        statActions: 'Actions Réalisées',
+        statLangs: 'Langues',
+        statCost: 'Gratuit Pour Toujours',
+        footerDesc: 'Gestionnaire Avancé d\'Abonnés Instagram',
+        footerDev: 'Développeur: @preacherion',
+        footerRights: 'Tous droits réservés.',
+        tutStep1: 'Ouvrez <strong>instagram.com</strong>',
+        tutStep2: 'Appuyez sur <strong>F12</strong> ou <strong>Ctrl+Shift+I</strong>',
+        tutStep3: 'Cliquez sur l\'onglet <strong>Console</strong>',
+        tutStep4: 'Collez le code & appuyez sur <strong>Entrée</strong>'
     }
 };
 
@@ -311,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialModal = document.getElementById('tutorialModal');
     const btnModalClose = document.getElementById('btnModalClose');
     const btnModalIg = document.getElementById('btnModalIg');
-    const tutorialVideo = document.getElementById('tutorialVideo');
 
     // Dropdown Elements
     const dropBtn = document.getElementById('langDropBtn');
@@ -607,5 +691,62 @@ window.PRELOWERS_INJECTED_SETTINGS = {
         .catch(() => {
             if(copyCountEl) copyCountEl.innerText = "5,412";
         });
+    // --- ANIMATED STATS COUNTER ---
+    function animateCounter(el, target, suffix = '') {
+        let current = 0;
+        const step = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = current.toLocaleString() + suffix;
+        }, 30);
+    }
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar && 'IntersectionObserver' in window) {
+        let statsAnimated = false;
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !statsAnimated) {
+                    statsAnimated = true;
+                    const statUsers = document.getElementById('statUsers');
+                    const statActions = document.getElementById('statActions');
+                    if (statUsers) animateCounter(statUsers, 15000, '+');
+                    if (statActions) animateCounter(statActions, 2000000, '+');
+                    statsObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        statsObserver.observe(statsBar);
+    }
+
+    // --- STEP CARDS: STAGGERED ENTRANCE ---
+    const stepCards = document.querySelectorAll('.step-card');
+    if (stepCards.length && 'IntersectionObserver' in window) {
+        stepCards.forEach((card, i) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+        });
+        const stepsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const cards = entry.target.querySelectorAll('.step-card');
+                    cards.forEach((card, i) => {
+                        setTimeout(() => {
+                            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, i * 150);
+                    });
+                    stepsObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.2 });
+        const stepsSection = document.querySelector('.steps-section');
+        if (stepsSection) stepsObserver.observe(stepsSection);
+    }
 
 });
